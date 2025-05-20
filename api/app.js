@@ -1,9 +1,9 @@
 //Carga variables de entorno del archivo .env
 require('dotenv').config(); 
 // Importa la función para conectar con MongoDB 
-const connectDB = require('./config/db.js');
+import connectDB from './config/db.js';
 //Importa express 
-const express = require('express');
+import express, { json } from 'express';
 // Inicializa la aplicación de Express
 const app = express();
 
@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 // Middleware para que Express  entienda JSON en el body de las peticiones
-app.use(express.json());
+app.use(json());
 
 //Rutade prueba en la raíz de la API 
 app.get('/', (req, res) => {

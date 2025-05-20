@@ -1,14 +1,14 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const authRouter = Router();
 
-const authRouter = router
-//Importamos el controlador de autenticación
-const authController = require/('../controllers/auth.controllers.js');
+//Importamos controladores de autenticación
+import { register } from '../controllers/auth/register.controller.js';
+import { login } from '../controllers/auth/login.controller.js';
 
 //Ruta para registrar un nuevo usuario
-authRouter.post('/register',authController.register);
+authRouter.post('/auth/register', register);
 
 //Ruta para iniciar sesión 
-authRouter.post('/login', authController.login);
+authRouter.post('/auth/login', login);
 
-module.exports = authRouter;
+export default authRouter;
