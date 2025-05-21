@@ -6,10 +6,10 @@ import Account from "../../models/Account";
  * @returns {Array} Cuentas del usuario
  */
 
-const getAccounts = async (userId) => {
+const getAllAccounts = async (userId) => {
     const accounts = await Account.find({ user: userId });
     return accounts;
 }
 
 
-export default getAccounts;
+export default getAllAccounts;
