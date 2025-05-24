@@ -1,0 +1,43 @@
+/* reset.css */
+
+/* 1. Elimina márgenes y paddings por defecto */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 2. Ajustes base para el HTML y body */
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  background-color: #fff;
+  color: #000;
+}
+
+/* 3. Quita decoraciones por defecto de listas y enlaces */
+ul, ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 4. Botones sin estilos nativos */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* 5. Imágenes y medios responsivos */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
