@@ -12,8 +12,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<AppLayout />} />
+        {/* Ruta pública*/}
         <Route path='/login' element={<Login />} />
+
+        {/*Rutas protegidas con layout */}
+        <Route path='/' element={<AppLayout />} />
         <Route path='/register' element={<Register />} />
         <Route path='/accounts' element={<Accounts />} />
         <Route path='/categories' element={<Categories />} />
@@ -21,7 +24,7 @@ function App() {
         <Route path='*' element={<NotFound />} />
 
       </Routes>
-    </BrowserRouter>
+        </BrowserRouter>
   )
 }
 
