@@ -8,33 +8,40 @@ const { Header, Sider, Content } = Layout;
 const AppLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
 
+    //Menú Sider
+    const menuItems = [
+        {
+            key: '1',
+            icon: <PieChartOutlined />,
+            label: <Link to='dashboard'>Dashboard</Link>,
+        },
+        {
+            key: '2',
+            icon: <DollarOutlined />,
+            label: <Link to='transactions'>Transacciones</Link>,
+        },
+        {
+            key: '3',
+            icon: <UserOutlined />,
+            label: <Link to='accounts'>Cuentas</Link>,
+        },
+        {
+            key: '4',
+            icon: <LogoutOutlined />,
+            label: <Link to='logout'>Cerrar sesión</Link>,
+        },
+    ];
     return (
-        <Layout style={{ mihHeigh: '100vh' }}>
+        <Layout style={{ minHeight: '100vh' }}>
 
             <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
 
                 <div style={{ color: '#fff', padding: 16, textAlign: 'center' }}>
-                    {collapsed ? '💰' : 'Mis Finanzas'}
+                    {collapsed ? '💰' : 'Mis Finanzas 💰'}
                 </div>
 
-                <Menu theme='dark' mode='inline'>
-                    <Menu.Item key='1' icon={<PieChartOutlined />}>
-                        <Link to='dashboard'>Dashboard</Link>
-                    </Menu.Item>
+                <Menu theme='dark' mode='inline' items={menuItems} />
 
-                    <Menu.Item key='2' icon={<DollarOutlined />}>
-                        <Link to='transactions'>Transacciones</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key='3' icon={UserOutlined}>
-                        <Link to='Accounts'>Cuentas</Link>
-                    </Menu.Item>
-
-                    <Menu.Item key='2' icon={<LogoutOutlined />}>
-                        <Link to='logout'>Cerrar sesión</Link>
-                    </Menu.Item>
-
-                </Menu>
 
             </Sider>
 
@@ -44,7 +51,7 @@ const AppLayout = () => {
                 <Content style={{ margin: '16px' }}>
                     <Outlet />
                 </Content>
-                
+
             </Layout>
         </Layout>
 

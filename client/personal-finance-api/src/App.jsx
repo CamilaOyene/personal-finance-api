@@ -7,34 +7,36 @@ import Accounts from './pages/Accounts';
 import Categories from './pages/Categories';
 import Transactions from './pages/Transactions';
 import NotFound from './pages/NotFound';
+import Dashboard from './pages/Dashboard';
+import LandingPage from './pages/LandingPage';
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Ruta pública*/}
+        {/* Landing page pública principal */}
+        <Route index element={<LandingPage />} />
+
+
+        {/* Autenticación*/}
+        <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
 
         {/*Rutas protegidas con layout */}
-        <Route path='/' element={<AppLayout />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/accounts' element={<Accounts />} />
-        <Route path='/categories' element={<Categories />} />
-        <Route path='/transactions' element={<Transactions />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path='/' element={<AppLayout />}>
+          <Route path='dashboard' element={<Dashboard />} />
+          <Route path='accounts' element={<Accounts />} />
+          <Route path='categories' element={<Categories />} />
+          <Route path='transactions' element={<Transactions />} />
+        </Route>
 
+        {/*Página no encontrada */}
+        <Route path='*' element={<NotFound />} />
       </Routes>
-        </BrowserRouter>
+    </BrowserRouter>
   )
 }
 
 
 export default App;
-
-// <BrowserRouter>
-//   <Routes>
-//     <Route path="/" element={<Login />} />
-//     <Route path="/register" element={<Register />} />
-//     <Route path="/home" element={<Home />} />
-//     <Route path="/accounts" element={<Accounts />} />
-//
