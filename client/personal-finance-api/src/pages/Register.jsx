@@ -10,7 +10,7 @@ const Register = () => {
 
     const onFinish = (values) => {
         setLoading(true);
-        localStorage.setItem('ser', JSON.stringify(values));
+        localStorage.setItem('user', JSON.stringify(values));
         message.success('Registro exitoso');
         navigate('/login');
         setLoading(false);
