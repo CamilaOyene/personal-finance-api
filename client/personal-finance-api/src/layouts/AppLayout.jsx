@@ -1,12 +1,32 @@
 import { Layout, Menu } from 'antd';
 import { PieChartOutlined, UserOutlined, DollarOutlined, LogoutOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 
 const AppLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
+    //Hook para navegar programáticamente 
+    const navigate = useNavigate();
+    //Hook para obtener la ruta actual
+    const location = useLocation();
+    //Verificamos si el usuario está autenticado
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === true;
+
+    //Si el usuario NO está autenticado, lo redirigimos a la página de login
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/login')
+        }
+    }, [isAuthenticated, navigate])//incluir navigate si lo uso dentro del efecto
+
+    //Función para cerrar sesión: borra info de usuario y redirige a login
+    const handleLogout = () => {
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('user');
+        navigate('/login');
+    };
 
     //Menú Sider
     const menuItems = [
@@ -28,7 +48,7 @@ const AppLayout = () => {
         {
             key: '4',
             icon: <LogoutOutlined />,
-            label: <Link to='logout'>Cerrar sesión</Link>,
+            label: <span onClick={handleLogout}>Cerrar sesión</span>
         },
     ];
     return (
@@ -40,8 +60,7 @@ const AppLayout = () => {
                     {collapsed ? '💰' : 'Mis Finanzas 💰'}
                 </div>
 
-                <Menu theme='dark' mode='inline' items={menuItems} />
-
+                <Menu theme='dark' mode='inline' selectedKeys={[location.pathname]} items={menuItems} />
 
             </Sider>
 
