@@ -12,7 +12,7 @@ const AppLayout = () => {
     //Hook para obtener la ruta actual
     const location = useLocation();
     //Verificamos si el usuario está autenticado
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === true;
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
     //Si el usuario NO está autenticado, lo redirigimos a la página de login
     useEffect(() => {
