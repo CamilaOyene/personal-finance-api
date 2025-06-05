@@ -1,34 +1,29 @@
-import { Divider, Typography } from "antd";
+import { Row, Col, Divider, Typography } from "antd";
 import SummaryCards from '../components/dashboard/SummaryCards';
 import TransacionsTable from '../components/dashboard/TransactionsTable';
-import IncomeExpenseCharts from '../components/dashboard/IncomeExpenseCharts';
+import IncomeExpenseChart from '../components/dashboard/IncomeExpenseCharts';
 
 const { Title } = Typography;
 
 const Dashboard = () => {
 
     return (
-        <div style={{ padding: '24px' }}>
-            {/*Título de la vista */}
-            <Title level={2}>Resumen del panel</Title>
+        <Row gutter={[16, 16]}>
+            {/* Summary Cards ocupa el ancho completo */}
+            <Col span={24}>
+                <SummaryCards />
+            </Col>
 
-            <Divider />
+            {/* Gráfico ocupa el ancho completo */}
+            <Col xs={24} md={12}>
+                <IncomeExpenseChart />
+            </Col>
 
-            {/*Tarjetas de resumen: balance , ingresos y gastos */}
-            <SummaryCards />
-
-            <Divider />
-
-            {/*Gráfico de ingresos vs gastos */}
-            <IncomeExpenseCharts />
-
-            <Divider />
-
-
-            {/*Gráfico de ingresos vs gastos */}
-            <TransacionsTable />
-
-        </div>
+            {/* Tabla ocupa el ancho completo */}
+            <Col span={24}>
+                <TransacionsTable />
+            </Col>
+        </Row>
     );
 };
 

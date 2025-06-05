@@ -15,7 +15,7 @@ const SummaryCards = () => {
             {/*Balance total */}
             <Col xs={24} sm={12} md={8}>
                 <Card title='Balance total'>
-                    <Title level={3}>${totalBalance}</Title>
+                    <Title level={3}> Balance total - ${totalBalance}</Title>
                 </Card>
             </Col>
 
@@ -24,7 +24,7 @@ const SummaryCards = () => {
             {/*Ingresos */}
             <Col xs={24} sm={12} md={8}>
                 <Card title='Ingresos'>
-                    <Title level={3} style={{ color: 'green' }}>${totalIncome}</Title>
+                    <Title level={3} style={{ color: 'green' }}>Ingresos - ${totalIncome}</Title>
                 </Card>
             </Col>
 
@@ -33,7 +33,7 @@ const SummaryCards = () => {
             {/*Gastos */}
             <Col xs={24} sm={12} md={8}>
                 <Card title='Gastos'>
-                    <Title level={3}>${totalExpenses}</Title>
+                    <Title level={3}>Gastos - ${totalExpenses}</Title>
                 </Card>
             </Col>
 

@@ -1,4 +1,4 @@
-import { Table, Tag } from 'antd';
+import { Table, Tag, Empty} from 'antd';
 
 const TransactionsTable = ({ data }) => {
     const columns = [
@@ -36,12 +36,14 @@ const TransactionsTable = ({ data }) => {
         },
     ];
 
-    return(
+    return (
         <Table
-        columns={columns}
-        dataSource={data.map((item)=>({...item, key: item.id}))}
-        pagination={{pageSize:5}}
-        locale={{emptyText:'No hay transacciones que coincidan.'}}
+            columns={columns}
+            dataSource={data?.map((item) => ({ ...item, key: item.id })) || []}
+            pagination={{ pageSize: 5 }}
+            locale={{
+                emptyText: <Empty description="No hay transacciones registradas" />
+            }}
         />
     );
 };

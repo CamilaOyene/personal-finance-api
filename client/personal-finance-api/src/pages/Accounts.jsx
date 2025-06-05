@@ -47,7 +47,7 @@ const AccountsPage = () => {
                 open={isModalVisible}
                 footer={null}
                 onCancel={() => setIsModalVisible(false)}
-                destroyOnClose>
+                destroyOnHidden>
                 <NewAccountForm onSave={handleAddAccount} />
             </Modal>
         </div>

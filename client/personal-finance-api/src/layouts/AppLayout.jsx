@@ -54,7 +54,7 @@ const AppLayout = () => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
 
-            <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
+            <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} width={200} style={{ position: 'fixed', left: 0, top: 0, bottom: 0 }} >
 
                 <div style={{ color: '#fff', padding: 16, textAlign: 'center' }}>
                     {collapsed ? '💰' : 'Mis Finanzas 💰'}
@@ -64,16 +64,22 @@ const AppLayout = () => {
 
             </Sider>
 
-            <Layout>
-                <Header style={{ backgroud: '#fff', padding: 0 }} />
+            <Layout style={{ marginLeft: 200 }}>
+                <Header style={{ background: '#fff', padding: 0 }} />
 
-                <Content style={{ margin: '16px' }}>
+                <Content
+                    style={{
+                        marginTop: 0,
+                        padding:12,
+                        overflowY: 'auto',
+                        height: 'calc(100vh - 64px)',
+                        background: '#fff'
+                    }}>
                     <Outlet />
                 </Content>
 
             </Layout>
-        </Layout>
-
+        </Layout >
 
     )
 }
