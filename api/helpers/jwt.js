@@ -1,5 +1,4 @@
-const jwt = require('jsonwebtoken');
-
+import jwt from 'jsonwebtoken';
 /**
  * Genera un token JWT
  * @param {Object} payload - Información que querés guardar en el token
@@ -12,6 +11,4 @@ const generateToken = (payload, expiresIn = '7d') => {
     return jwt.sign(payload, secret, { expiresIn });
 }
 
-module.exports = {
-    generateToken
-};
+export default generateToken;

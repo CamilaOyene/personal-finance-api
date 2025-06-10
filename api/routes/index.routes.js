@@ -4,7 +4,7 @@ import { Router } from "express";
  import authRouter from './auth.routes.js';
  import categoryRouter from './category.routes.js';
  import accountRouter from './account.routes.js';
- import transactionRouter from "./transaction.routes";
+ import transactionRouter from "./transaction.routes.js";
 
  const router = Router();
 

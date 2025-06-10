@@ -1,6 +1,6 @@
 //Importamos Mongoose para definir el esquema y bcrypt para encriptar contraseñas
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 //Definimo el esquema de usuario
 const userSchema = new mongoose.Schema({
@@ -26,4 +26,5 @@ userSchema.methods.comparePassword = async function (plainPassword) {
     return bcrypt.compare(plainPassword, this.password)
 }
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+export default User;

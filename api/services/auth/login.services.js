@@ -1,5 +1,5 @@
 import User from '../../models/User.js';
-import { generateToken } from '../../helpers/jwt.js';
+import  generateToken  from '../../helpers/jwt.js';
 
 //Inicia sesión verificando las credenciales y devolviendo un token
 /**

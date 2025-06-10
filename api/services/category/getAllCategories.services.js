@@ -1,4 +1,4 @@
-import Category from "../models/Category";
+import Category from "../../models/Category.js";
 
 /**
  * Devuelve todas las categorías a un usuari

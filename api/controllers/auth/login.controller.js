@@ -1,4 +1,4 @@
-import loginUser from '../../services/auth/login.services';
+import loginUser from '../../services/auth/login.services.js';
 
 /**
  * 

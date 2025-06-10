@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 //Definimos el esquema de cuentas(Cuentas bancarias, efectivo, etc)
-const accountSchema = new mongooseSchema({
+const accountSchema = new mongoose.Schema({
     //Referencia al usuario dueño de esta cuenta
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     //Nombre de la cuenta (ej: Banco Nacion, Efectivo)
@@ -12,5 +12,6 @@ const accountSchema = new mongooseSchema({
 }, { timestamps: true });
 
 
+const Account = mongoose.model('Account', accountSchema);
 
-module.exports = mongoose.model('Account', accountSchema);
+export default Account;

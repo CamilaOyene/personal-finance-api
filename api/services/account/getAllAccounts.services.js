@@ -1,4 +1,4 @@
-import Account from "../../models/Account";
+import Account from "../../models/Account.js";
 
 /**
  * Obtiene todas las cuentas de un usuario

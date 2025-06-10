@@ -6,9 +6,9 @@ import register from '../controllers/auth/register.controller.js';
 import login from '../controllers/auth/login.controller.js';
 
 //Ruta para registrar un nuevo usuario
-authRouter.post('/auth/register', register);
+authRouter.post('/register', register);
 
 //Ruta para iniciar sesión 
-authRouter.post('/auth/login', login);
+authRouter.post('/login', login);
 
 export default authRouter;

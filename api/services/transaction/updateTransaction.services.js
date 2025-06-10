@@ -1,4 +1,4 @@
-import Transaction from "../../models/Transaction";
+import Transaction from "../../models/Transaction.js";
 
 /**
  * Actualiza una transacción existente

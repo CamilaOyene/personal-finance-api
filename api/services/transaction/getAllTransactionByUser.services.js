@@ -1,4 +1,4 @@
-import Transaction from "../../models/Transaction";
+import Transaction from "../../models/Transaction.js";
 
 /**
  * Obtiene todas las transacciones de un usuario

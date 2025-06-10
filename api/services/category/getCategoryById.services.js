@@ -1,4 +1,4 @@
-import Category from '../models/Category';
+import Category from '../../models/Category.js';
 
 /**
  * Obtiene una categoría específica por su ID, asegurando que pertenezca al usuario.

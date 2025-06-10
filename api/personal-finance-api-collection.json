@@ -1,0 +1,319 @@
+{
+  "info": {
+    "_postman_id": "pf-collection-001",
+    "name": "Personal Finance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"usuarioEjemplo\",\n  \"email\": \"usuario@mail.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"usuario@mail.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "Categories - Get All",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/categories/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["categories"]
+        }
+      }
+    },
+    {
+      "name": "Categories - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Comida\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/categories/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["categories"]
+        }
+      }
+    },
+    {
+      "name": "Categories - Get by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/categories/{{categoryId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["categories", "{{categoryId}}"]
+        }
+      }
+    },
+    {
+      "name": "Categories - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Transporte\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/categories/{{categoryId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["categories", "{{categoryId}}"]
+        }
+      }
+    },
+    {
+      "name": "Categories - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/categories/{{categoryId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["categories", "{{categoryId}}"]
+        }
+      }
+    },
+    {
+      "name": "Accounts - Get All",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/accounts/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["accounts"]
+        }
+      }
+    },
+    {
+      "name": "Accounts - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Banco Nación\",\n  \"balance\": 10000\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/accounts/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["accounts"]
+        }
+      }
+    },
+    {
+      "name": "Accounts - Get by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/accounts/{{accountId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["accounts", "{{accountId}}"]
+        }
+      }
+    },
+    {
+      "name": "Accounts - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Banco Galicia\",\n  \"balance\": 15000\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/accounts/{{accountId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["accounts", "{{accountId}}"]
+        }
+      }
+    },
+    {
+      "name": "Accounts - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/accounts/{{accountId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["accounts", "{{accountId}}"]
+        }
+      }
+    },
+    {
+      "name": "Transactions - Get All",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/transactions/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transactions"]
+        }
+      }
+    },
+    {
+      "name": "Transactions - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 500,\n  \"category\": \"{{categoryId}}\",\n  \"account\": \"{{accountId}}\",\n  \"description\": \"Compra supermercado\",\n  \"date\": \"2025-06-09T00:00:00.000Z\",\n  \"type\": \"expense\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/transactions/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transactions"]
+        }
+      }
+    },
+    {
+      "name": "Transactions - Get by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/transactions/{{transactionId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transactions", "{{transactionId}}"]
+        }
+      }
+    },
+    {
+      "name": "Transactions - Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 700,\n  \"description\": \"Compra modificada\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/transactions/{{transactionId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transactions", "{{transactionId}}"]
+        }
+      }
+    },
+    {
+      "name": "Transactions - Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/transactions/{{transactionId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["transactions", "{{transactionId}}"]
+        }
+      }
+    }
+  ]
+}

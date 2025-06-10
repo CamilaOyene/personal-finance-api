@@ -1,4 +1,4 @@
-import getAllTransactions from '../../services/transaction/getAllTransactionByUser.services';
+import getAllTransactions from '../../services/transaction/getAllTransactionByUser.services.js';
 
 /**
  * Devuelve todas las transacciones del usuario autenticado

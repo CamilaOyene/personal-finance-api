@@ -15,7 +15,7 @@ const transactionSchema = new Schema({
     //Cuenta asociada(ej: banco, efectivo,etc.)
     account: { type: Schema.Types.ObjectId, ref: 'Account' },
     //Fecha de la transacción(por defecto:fecha actual)
-    date: { type: DataTransfer, default: Date.now }
+    date: { type: Date , default: Date.now }
     // Registra automáticamente createdAt y updatedAt
 }, { timestamps: true });
 

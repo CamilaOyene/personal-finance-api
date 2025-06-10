@@ -52,14 +52,6 @@ Este proyecto consiste en construir una API REST para gestionar finanzas persona
 
 ---
 
-## 🧠 Tips
-
-- Usá control de versiones con Git en cada etapa importante.
-- Probá las rutas con Postman.
-- Documentá cada módulo con comentarios claros.
-- Mantén este roadmap actualizado a medida que avanzás.
-
----
 
 
 
@@ -100,10 +92,3 @@ Este proyecto consiste en construir una API REST para gestionar finanzas persona
 
 
 
-
-
-
-
-
-
-No olvidar ir modificando readme a medida que se va desarrollando el proyecto. 

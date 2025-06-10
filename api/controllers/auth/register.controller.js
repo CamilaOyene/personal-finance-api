@@ -1,4 +1,4 @@
-import registerUser from '../../services/auth/register.services';
+import registerUser from '../../services/auth/register.services.js';
 
 
 /**
