@@ -6,7 +6,7 @@ import createCategory from '../../services/category/createCategory.services.js';
 
 const createCategoryController = async(req,res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const category = await createCategory(req.body, userId)
         res.status(201).json({
             message:'Categoría creada con éxito',
