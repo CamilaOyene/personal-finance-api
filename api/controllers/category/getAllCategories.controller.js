@@ -7,7 +7,7 @@ import getAllCategories from '../../services/category/getAllCategories.services.
 
 const getAllCategoriesController = async( req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const categories = await getAllCategories(userId);
         res.status(200).json(categories);
     } catch (error) {   

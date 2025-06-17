@@ -7,8 +7,8 @@ import updateAccount from '../../services/account/updateAccount.services.js';
 
 const updateAccountController = async (req,res) => {
     try {
-        const userId = req.user.id;
-        const updated = await updateAccount(req.params.id, req.body, userId)
+        const userId = req.user.userId;
+        const updated = await updateAccount(req.params.id, userId, req.body)
         res.status(200).json({message:'Cuenta actualizada', account:updated});
     } catch (error) {
         res.status(400).json({error: error.message});

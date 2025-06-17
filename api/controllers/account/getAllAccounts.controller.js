@@ -7,7 +7,7 @@ import getAllAccounts from "../../services/account/getAllAccounts.services.js";
 
 const getAllAccountsController = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const accounts = await getAllAccounts(userId);
         res.status(200).json({ accounts });
     } catch (error) {

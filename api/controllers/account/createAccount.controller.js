@@ -7,9 +7,9 @@ import createAccount from '../../services/account/createAccount.services.js';
 
 const createAccountController = async ( req,res) =>{
     try {
-        const userId = req.user.id;
-        const newAccount = await createAccount(req.body, userId);
-        res.status(200).json({message:'Cuenta creada con éxito', account: newAccount});
+        const userId = req.user.userId;
+        const newAccount = await createAccount({...req.body, user: userId});
+        res.status(201).json({message:'Cuenta creada con éxito', account: newAccount});
     } catch (error) {
         res.status(400).json({error: error.message});
     }

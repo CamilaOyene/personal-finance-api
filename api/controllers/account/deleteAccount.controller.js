@@ -8,7 +8,7 @@ import deleteAccount from '../../services/account/deleteAccount.services.js';
 
 const deleteAccountController = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const deleted = await deleteAccount(req.params.id, userId);
         res.status(200).json({ message: 'Cuenta eliminada', account: deleted });
     } catch (error) {

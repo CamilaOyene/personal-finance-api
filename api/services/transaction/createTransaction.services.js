@@ -17,7 +17,7 @@ const createTransaction = async (transactionData, userId) => {
     }
 
     //Creamos una nueva instancia de transacción
-    const newTransaction = newTransaction({
+    const newTransaction = new Transaction({
         amount,
         date,
         description,

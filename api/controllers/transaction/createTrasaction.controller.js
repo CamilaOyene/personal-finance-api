@@ -7,7 +7,7 @@ import createTransaction from '../../services/transaction/createTransaction.serv
 
 const createTransactionController = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const newTransaction = await createTransaction(req.body, userId);
         res.status(201).json({
             message: 'Transacción creada exitosamente',

@@ -10,11 +10,11 @@ import Transaction from "../../models/Transaction.js";
 
 const updateTransaction = async (transactionId, userId, updateData) => {
     const transaction = await Transaction.findOneAndUpdate(
-        { _id: transactionId, userId },
+        { _id: transactionId, user: userId },
         updateData,
         { new: true }
     );
-    if(!transaction){
+    if (!transaction) {
         throw new Error('Transacción no encontrada o no autorizada');
     }
     return transaction;

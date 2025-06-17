@@ -7,7 +7,7 @@ import getAllTransactionById from '../../services/transaction/getTransactionById
 
 const getTransactionByIdController = async (req,res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const transactionId = req.params.id;
         const transaction = await getAllTransactionById(transactionId,userId);
         res.status(200).json(transaction);

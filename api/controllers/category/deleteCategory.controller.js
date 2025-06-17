@@ -8,7 +8,7 @@ import deleteCategory from '../../services/category/deleteCategory.services.js';
 
 const deleteCategoryController = async(req, res) =>{
     try {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const categoryId = req.params.id;
         await deleteCategory(categoryId, userId);
         res.status(200).json({message: 'Categoría eliminada con éxito'})

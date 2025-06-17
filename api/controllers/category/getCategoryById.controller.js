@@ -7,7 +7,7 @@ import getCategoryById from '../../services/category/getCategoryById.services.js
 
 const getCategoryByIdController = async(req,res) => {
     try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const categoryId = req.params.id
     const category = await getCategoryById(categoryId,userId);
     res.status(200).json(category)        
