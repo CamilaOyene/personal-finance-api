@@ -1,37 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input, Button, Typography, message } from 'antd';
+import { loginUser } from '../features/auth/authSlice';
 
 const { Title } = Typography;
 
 const Login = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+
+    const { loading, isAuthenticated, error } = useSelector(state => state.auth);
 
     //redirige si ya estoy logueado 
     useEffect(() => {
-        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (isAuthenticated) {
             navigate('/dashboard');
         }
-    }, [navigate]);
+    }, [isAuthenticated, navigate]);
 
-    
-    const onFinish = ({ email, password }) => {
-        setLoading(true);
-        const storedUser = JSON.parse(localStorage.getItem('user'));
 
-        if (storedUser && storedUser.email === email && storedUser.password === password) {
-            localStorage.setItem('isAuthenticated', 'true');
+    const onFinish = async (values) => {
+        try {
+            await dispatch(loginUser(values)).unwrap();
+
             message.success('Inicio de sesión exitoso');
             navigate('/dashboard');
-        } else {
-            message.error('Credenciales incorrectas');
+        } catch (error) {
+            message.error(error)
         }
-
-        setLoading(false);
-
-    };
+    }
 
     return (
         <div style={{ maxWidth: 400, margin: '80px auto' }}>
@@ -45,6 +43,11 @@ const Login = () => {
                     <Input.Password />
                 </Form.Item>
 
+                {error && (
+                    <Form.Item>
+                        <Typography.Text type="danger">{error}</Typography.Text>
+                    </Form.Item>
+                )}
                 <Button type='primary' htmlType='submit' loading={loading}>
                     Entrar
                 </Button>
