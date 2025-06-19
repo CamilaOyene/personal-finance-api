@@ -24,11 +24,13 @@ function App() {
         <Route path='/login' element={<Login />} />
 
         {/*Rutas protegidas con layout */}
-        <Route path='/' element={<AppLayout />}>
-          <Route path='dashboard' element={<Dashboard />} />
-          <Route path='accounts' element={<Accounts />} />
-          <Route path='categories' element={<Categories />} />
-          <Route path='transactions' element={<Transactions />} />
+        <Route element={<PrivateRoute />}>
+          <Route path='/' element={<AppLayout />}>
+            <Route path='dashboard' element={<Dashboard />} />
+            <Route path='accounts' element={<Accounts />} />
+            <Route path='categories' element={<Categories />} />
+            <Route path='transactions' element={<Transactions />} />
+          </Route>
         </Route>
 
         {/*Página no encontrada */}
