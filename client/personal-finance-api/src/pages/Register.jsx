@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Form, Input, Button, Typography, message } from 'antd';
+
+
 
 const { Title } = Typography;
 
 const Register = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-
 
     //redirige si ya estoy logueado 
     useEffect(() => {
@@ -18,13 +21,18 @@ const Register = () => {
     }, [navigate]);
 
 
-    const onFinish = (values) => {
-        setLoading(true);
-        localStorage.setItem('user', JSON.stringify(values));
-        message.success('Registro exitoso');
-        navigate('/login');
-        setLoading(false);
+    const onFinish = async (values ) => {
+        try {
+            //Enviamos los datos y accedemos directamente al resultado si fue exitoso
+            await dispatch(registerUser(values)).unwrap();
+            message.success('Registro exitoso');
+            navigate('/login')
+        } catch (error) {
+            //Si ocurre un error (viene del thunkAPI.rejectWithValue) lo mostramos en un mensaje de error.
+         message.error(error);
+        }
     }
+
 
     return (
         <div style={{ maxWidth: 400, margin: '80px auto' }}>
@@ -43,7 +51,7 @@ const Register = () => {
                     <Input />
                 </Form.Item>
 
-                <Button type='primary' htmlType='submit' loading={loading}>
+                <Button type='primary' htmlType='submit' block>
                     Registrarse
                 </Button>
 
