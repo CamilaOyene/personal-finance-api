@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Typography, message } from 'antd';
 
@@ -7,6 +7,16 @@ const { Title } = Typography;
 const Register = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+
+
+    //redirige si ya estoy logueado 
+    useEffect(() => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [navigate]);
+
 
     const onFinish = (values) => {
         setLoading(true);
@@ -41,6 +51,9 @@ const Register = () => {
 
         </div>
     )
-}
+};
 
 export default Register;
+
+
+

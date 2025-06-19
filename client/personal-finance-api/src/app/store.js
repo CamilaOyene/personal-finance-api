@@ -1,11 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+//Importo reducer de slice de autenticación
+import authReducer from './authSlice';
 
-//Importar reducers
-// eslint-disable-next-line no-unused-vars 
-const dummyReducer = (state = {},action) => state;
 
 export const store = configureStore({
     reducer: {
-        dummy: dummyReducer,    
+       auth: authReducer,   
     },
 });
