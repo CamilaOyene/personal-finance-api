@@ -18,6 +18,9 @@ const AccountsPage = () => {
         dispatch(createAccount(account))
             .unwrap()
             .then(() => setIsModalVisible(false))
+            .catch((err) => {
+                console.error('Error al crear cuenta:', err);
+            });
     }
 
     const columns = [
@@ -47,7 +50,7 @@ const AccountsPage = () => {
                 + Nueva Cuenta
             </Button>
 
-            {error && <Alert message={error} type='errir' showIcon style={{ marginBottom: 16 }} />}
+            {error && <Alert message={error} type='error' showIcon style={{ marginBottom: 16 }} />}
 
             <Table
                 dataSource={dataSource}
