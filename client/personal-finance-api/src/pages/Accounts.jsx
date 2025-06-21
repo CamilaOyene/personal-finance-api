@@ -1,19 +1,24 @@
-import { useState } from "react";
-import { Button, Table, Modal } from 'antd';
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, Table, Modal, Alert } from 'antd';
 import NewAccountForm from '../components/accounts/NewAccountForm';
+import { getAllAccounts, createAccount } from '../features/accounts/accountsSlice';
 
 const AccountsPage = () => {
-    const [accounts, setAccounts] = useState([
-        { id: 1, name: 'Caja', balance: 5000 },
-        { id: 2, name: 'Banco', balance: 15000 },
-    ]);
+    const dispatch = useDispatch();
+    const { accounts, loading, error } = useSelector((state) => state.accounts);
 
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    useEffect(() => {
+        dispatch(getAllAccounts())
+    }, [dispatch]);
+
     const handleAddAccount = (account) => {
-        setAccounts((prev) => [...prev, { ...account, id: Date.now() }]);
-        setIsModalVisible(false);
-    };
+        dispatch(createAccount(account))
+            .unwrap()
+            .then(() => setIsModalVisible(false))
+    }
 
     const columns = [
         {
@@ -29,25 +34,36 @@ const AccountsPage = () => {
         },
     ];
 
+    const dataSource = accounts.map(account => ({
+        ...account,
+        key: account._id || account.id,
+    }))
     return (
         <div style={{ maxWidth: 800, margin: '0 auto', padding: 24 }}>
+
             <h1>Cuentas</h1>
+
             <Button type="primary" onClick={() => setIsModalVisible(true)} style={{ marginBottom: 16 }}>
                 + Nueva Cuenta
             </Button>
 
+            {error && <Alert message={error} type='errir' showIcon style={{ marginBottom: 16 }} />}
+
             <Table
-                dataSource={accounts.map(acc => ({ ...acc, key: acc.id }))}
+                dataSource={dataSource}
                 columns={columns}
+                loading={loading}
                 pagination={{ pageSize: 5 }}
-                locale={{ emptyText: 'No hay cuentas cargadas' }}
+                locale={{ emptyText: loading ? 'Cargando...' : 'No hay cuentas cargadas' }}
             />
+
             <Modal
                 title='Nueva Cuenta'
                 open={isModalVisible}
                 footer={null}
                 onCancel={() => setIsModalVisible(false)}
                 destroyOnHidden>
+
                 <NewAccountForm onSave={handleAddAccount} />
             </Modal>
         </div>
