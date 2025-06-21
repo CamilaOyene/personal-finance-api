@@ -67,7 +67,7 @@ export const deleteTransaction = createAsyncThunk(
             await api.delete(`/transactions/${id}`);
             return id;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response?.data?.error);
+            return thunkAPI.rejectWithValue(error.response?.data?.error || 'Error  al eliminar transacción');
         }
     }
 );
@@ -92,6 +92,103 @@ const transactionsSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        builder
 
+            //GET ALL
+            .addCase(getAllTransactions.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(getAllTransactions.fulfilled, (state, action) => {
+                state.loading = false;
+                state.transactions = action.payload;
+                state.error = null;
+            })
+
+            .addCase(getAllTransactions.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+
+            //get by id 
+            .addCase(getTransactionById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(getTransactionById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.selectedTransaction = action.payload;
+                state.error = null;
+            })
+
+            .addCase(getTransactionById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+
+            //createTransaction
+            .addCase(createTransaction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(createTransaction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.transactions.push(action.payload);
+                state.error = null;
+            })
+
+            .addCase(createTransaction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+
+            //UPDATE
+            .addCase(updateTransaction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(updateTransaction.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.transactions.findIndex(transaction => transaction._id === action.payload._id);
+                if (index !== -1) {
+                    state.transactions[index] = action.payload;
+                };
+                state.error = null;
+            })
+
+            .addCase(updateTransaction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+
+            //delete transaction
+            .addCase(deleteTransaction.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+
+            .addCase(deleteTransaction.fulfilled, (state, action) => {
+                state.loading = false;
+                state.transactions = state.transactions.filter(transaction => transaction._id !== action.payload);
+                state.error = null;
+            })
+
+            .addCase(deleteTransaction.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            });
     }
-})
+});
+
+
+export const { clearSelectedTransaction } = transactionsSlice.actions;
+
+export default transactionsSlice.reducer;
