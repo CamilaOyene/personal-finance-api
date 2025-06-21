@@ -1,43 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Modal } from 'antd';
 import Filters from '../components/Transactions/Filters';
 import TransactionsTable from '../components/Transactions/TransactionsTable';
 import NewTransactionForm from '../components/Transactions/NewTransactionForm';
-
+import { getAllTransactions, createTransaction } from '../features/transactions/transactionsSlice';
 
 const TransactionsPage = () => {
+
+    const dispatch = useDispatch();
+    //Datos desde el store
+    const { transactions, loading } = useSelector((state) => state.transactions);
+    //filtros, mantenemos estado local
     const [filters, setFilters] = useState({
         type: 'all',
         category: '',
         dateRange: []
     });
-
-    const [transactions, setTransactions] = useState([
-
-        {
-            id: 1,
-            type: 'ingreso',
-            category: 'Sueldo',
-            amount: 1000,
-            date: '2025-06-01'
-        },
-        {
-            id: 2,
-            type: 'gasto',
-            category: 'Comida',
-            amount: 200,
-            date: '2025-06-03'
-        }
-    ]);
-
+    //Modal para agregar
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const handleAddTransaction = (tx) => {
-        const newTx = { ...tx, id: Date.now() };
-        setTransactions([...transactions, newTx]);
-        setIsModalVisible(false);
-    };
 
+    //Traer las transacciones al montar
+    useEffect(() => {
+        dispatch(getAllTransactions());
+    }, [dispatch])
+
+    //Agregar nueva transacción
+    const handleAddTransaction = async (txData) => {
+        try {
+            await dispatch(createTransaction(txData)).unwrap();
+            setIsModalVisible(false);
+        } catch (error) {
+            console.error('Error al crear transacción', error);
+        }
+    }
+    //Filtrado(se hace sobre las transacciones del store)
     const filteredTransactions = transactions.filter((tx) => {
         const matchType = filters.type === 'all' || tx.type === filters.type;
         const matchCategory = !filters.category || tx.category === filters.category;
@@ -76,7 +74,7 @@ const TransactionsPage = () => {
             >
                 <NewTransactionForm onSave={handleAddTransaction} />
             </Modal>
-            <TransactionsTable date={filteredTransactions} />
+            <TransactionsTable data={filteredTransactions} loading={loading} />
 
         </div>
     );

@@ -1,6 +1,6 @@
-import { Table, Tag, Empty} from 'antd';
+import { Table, Tag, Empty } from 'antd';
 
-const TransactionsTable = ({ data }) => {
+const TransactionsTable = ({ data, loading }) => {
     const columns = [
         {
             title: 'Tipo',
@@ -11,11 +11,6 @@ const TransactionsTable = ({ data }) => {
                     {text.toUpperCase()}
                 </Tag>
             ),
-        },
-        {
-            title: 'Categoría',
-            dataIndex: 'category',
-            key: 'category',
         },
         {
             title: 'Categoría',
@@ -36,11 +31,16 @@ const TransactionsTable = ({ data }) => {
         },
     ];
 
+    const dataSource = data?.map((item) => ({
+        ...item,
+        key: item._id,
+    })) || [];
     return (
         <Table
             columns={columns}
-            dataSource={data?.map((item) => ({ ...item, key: item.id })) || []}
+            dataSource={dataSource}
             pagination={{ pageSize: 5 }}
+            loading={loading}
             locale={{
                 emptyText: <Empty description="No hay transacciones registradas" />
             }}

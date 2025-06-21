@@ -7,13 +7,17 @@ import NewCategoryForm from '../components/Categories/NewCategoryForm';
 const CategoriesPage = () => {
 
     const dispatch = useDispatch();
+    // Extraemos las categorías y estado de carga desde el slice
     const { categories, loading } = useSelector((state) => state.categories);
+    // Estado para mostrar/ocultar el modal
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    // Al montar el componente, obtenemos todas las categorías
     useEffect(() => {
         dispatch(getAllCategories());
     }, [dispatch]);
 
+    // Lógica para crear una nueva categoría
     const handleAddCategory = async (categoryData) => {
         try {
             await dispatch(createCategory(categoryData)).unwrap();
@@ -31,11 +35,14 @@ const CategoriesPage = () => {
         },
     ];
 
-    //datos para la tabla
+    // Adaptamos las categorías al formato que necesita Ant Design
     const dataSource = categories.map(cat => ({
         ...cat,
         key: cat._id
     }));
+
+
+
     return (
         <div style={{ maxWidth: 600, margin: '0 auto', padding: 24 }}>
             <h1>Categorías</h1>
