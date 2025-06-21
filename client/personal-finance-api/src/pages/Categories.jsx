@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Table, Modal } from "antd";
+import { getAllCategories, createCategory } from '../features/categories/categoriesSlice';
 import NewCategoryForm from '../components/Categories/NewCategoryForm';
 
 const CategoriesPage = () => {
 
-    const [categories, setCategories] = useState([
-        { id: 1, name: 'Comida' },
-        { id: 2, name: 'Transporte' },
-    ]);
-
+    const dispatch = useDispatch();
+    const { categories, loading } = useSelector((state) => state.categories);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    useEffect(() => {
+        dispatch(getAllCategories());
+    }, [dispatch]);
 
-    const handleAddCategory = (category) => {
-        setCategories((prev) => [...prev, { ...category, id: Date.now() }]);
-        setIsModalVisible(false);
-    };
+    const handleAddCategory = async (categoryData) => {
+        try {
+            await dispatch(createCategory(categoryData)).unwrap();
+            setIsModalVisible(false);
+        } catch (error) {
+            console.error('Error al crear categoría', error);
+        }
+    }
 
     const columns = [
         {
@@ -25,6 +31,11 @@ const CategoriesPage = () => {
         },
     ];
 
+    //datos para la tabla
+    const dataSource = categories.map(cat => ({
+        ...cat,
+        key: cat._id
+    }));
     return (
         <div style={{ maxWidth: 600, margin: '0 auto', padding: 24 }}>
             <h1>Categorías</h1>
@@ -32,19 +43,20 @@ const CategoriesPage = () => {
                 + Nueva Categoría
             </Button>
             <Table
-                dataSource={categories.map(cat => ({ ...cat, key: cat.id }))}
+                dataSource={dataSource}
                 columns={columns}
                 pagination={{ pageSize: 5 }}
+                loading={loading}
                 locale={{ emptyText: 'No hay categorías cargadas' }}
             />
             <Modal
-            title='Nueva Categoría'
-            open={isModalVisible}
-            footer={null}
-            onCancel={()=>setIsModalVisible(false)}
-            destroyOnClose
+                title='Nueva Categoría'
+                open={isModalVisible}
+                footer={null}
+                onCancel={() => setIsModalVisible(false)}
+                destroyOnClose
             >
-                <NewCategoryForm onSave={handleAddCategory}/>
+                <NewCategoryForm onSave={handleAddCategory} />
             </Modal>
         </div>
     )
