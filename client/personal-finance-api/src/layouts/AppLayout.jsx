@@ -1,18 +1,21 @@
 import { Layout, Menu } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
 import { PieChartOutlined, UserOutlined, DollarOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
+import { logout } from '../features/auth/authSlice';
 
 const { Header, Sider, Content } = Layout;
 
 const AppLayout = () => {
+    const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(false);
     //Hook para navegar programáticamente 
     const navigate = useNavigate();
     //Hook para obtener la ruta actual
     const location = useLocation();
     //Verificamos si el usuario está autenticado
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
     //Si el usuario NO está autenticado, lo redirigimos a la página de login
     useEffect(() => {
@@ -23,9 +26,8 @@ const AppLayout = () => {
 
     //Función para cerrar sesión: borra info de usuario y redirige a login
     const handleLogout = () => {
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('user');
-        navigate('/login');
+        dispatch(logout());
+        navigate('/login', { replace: true })
     };
 
     //Menú Sider
@@ -70,7 +72,7 @@ const AppLayout = () => {
                 <Content
                     style={{
                         marginTop: 0,
-                        padding:12,
+                        padding: 12,
                         overflowY: 'auto',
                         height: 'calc(100vh - 64px)',
                         background: '#fff'

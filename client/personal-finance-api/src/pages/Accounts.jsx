@@ -2,26 +2,37 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Table, Modal, Alert } from 'antd';
 import NewAccountForm from '../components/accounts/NewAccountForm';
-import { getAllAccounts, createAccount } from '../features/accounts/accountsSlice';
+import { getAllAccounts, createAccount, updateAccount } from '../features/accounts/accountsSlice';
 
 const AccountsPage = () => {
     const dispatch = useDispatch();
     const { accounts, loading, error } = useSelector((state) => state.accounts);
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editingAccount, setEditingAccount] = useState(null);
 
+    //Cargar cuentas al montar
     useEffect(() => {
         dispatch(getAllAccounts())
     }, [dispatch]);
 
-    const handleAddAccount = (account) => {
-        dispatch(createAccount(account))
-            .unwrap()
-            .then(() => setIsModalVisible(false))
-            .catch((err) => {
-                console.error('Error al crear cuenta:', err);
-            });
-    }
+    //Guardar o actualizar cuenta
+    const handleSaveAccount = (account) => {
+        if (editingAccount) {
+            dispatch(updateAccount({ ...account, _id: editingAccount._id }))
+                .unwrap()
+                .then(() => {
+                    setIsModalVisible(false);
+                    setEditingAccount(null);
+                })
+                .catch((err) => console.error('Error al editar: ', err))
+        } else {
+            dispatch(createAccount(account))
+                .unwrap()
+                .then(() => setIsModalVisible(false))
+                .catch((err) => console.error('Error al crear: ', err));
+        }
+    };
 
     const columns = [
         {
@@ -35,7 +46,27 @@ const AccountsPage = () => {
             key: 'balance',
             render: (balance) => `$${balance.toFixed(2)}`,
         },
+        {
+            title: 'Acciones',
+            key: 'actions',
+            render: (_, record) => (
+                <Space>
+                    <Button onClick={() => handleEdit(record)}>Editar</Button>
+                </Space>
+            )
+        }
     ];
+
+    //Preparar edición 
+    const handleEdit = (account) => {
+        setEditingAccount(account);
+        setIsModalVisible(true);
+    };
+
+    const handleAddAccount = (account) => {
+        setEditingAccount(account);//Para crear cuenta se pone null 
+        setIsModalVisible(true);
+    };
 
     const dataSource = accounts.map(account => ({
         ...account,
@@ -46,7 +77,8 @@ const AccountsPage = () => {
 
             <h1>Cuentas</h1>
 
-            <Button type="primary" onClick={() => setIsModalVisible(true)} style={{ marginBottom: 16 }}>
+            <Button type="primary" onClick={handleAddAccount}
+                style={{ marginBottom: 16 }}>
                 + Nueva Cuenta
             </Button>
 
@@ -61,15 +93,18 @@ const AccountsPage = () => {
             />
 
             <Modal
-                title='Nueva Cuenta'
+                title={editingAccount ? 'Editar Cuenta' : 'Nueva cuenta'}
                 open={isModalVisible}
                 footer={null}
-                onCancel={() => setIsModalVisible(false)}
+                onCancel={() => {
+                    setIsModalVisible(false);
+                    setEditingAccount(null);
+                }}
                 destroyOnHidden>
 
-                <NewAccountForm onSave={handleAddAccount} />
+                <NewAccountForm onSave={handleSaveAccount} initialValues={editingAccount} />//Pasamos valores si se está editando
             </Modal>
-        </div>
+        </div >
     )
 
 

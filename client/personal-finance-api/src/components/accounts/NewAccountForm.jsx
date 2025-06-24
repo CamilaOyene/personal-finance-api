@@ -1,6 +1,6 @@
 import { Form, Input, Button } from 'antd';
 
-const NewAccountForm = ({ onSave }) => {
+const NewAccountForm = ({ onSave}) => {
 
     const [form] = Form.useForm();
 

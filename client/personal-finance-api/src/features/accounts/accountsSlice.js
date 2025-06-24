@@ -50,7 +50,7 @@ export const updateAccount = createAsyncThunk(
     'accounts/update',
     async (data, thunkAPI) => {
         try {
-            const res = await api.post('/accounts', data);
+            const res = await api.put('/accounts/${data._id}', data);
             return res.data
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data.error || 'Error al actualizar cuenta');
