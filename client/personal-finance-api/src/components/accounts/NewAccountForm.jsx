@@ -1,8 +1,15 @@
 import { Form, Input, Button } from 'antd';
+import { useEffect } from 'react';
 
-const NewAccountForm = ({ onSave}) => {
+const NewAccountForm = ({ onSave, initialValues}) => {
 
     const [form] = Form.useForm();
+
+    useEffect(()=> {
+        if(initialValues){
+            form.setFieldValue(initialValues);
+        }
+    },[initialValues, form])
 
     const onFinish = (values) => {
         onSave({

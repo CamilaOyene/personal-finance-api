@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Table, Modal, Alert } from 'antd';
+import { Button, Table, Modal, Alert,Space, Popconfirm,message } from 'antd';
 import NewAccountForm from '../components/accounts/NewAccountForm';
-import { getAllAccounts, createAccount, updateAccount } from '../features/accounts/accountsSlice';
+import { getAllAccounts, createAccount, updateAccount, deleteAccount } from '../features/accounts/accountsSlice';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const AccountsPage = () => {
     const dispatch = useDispatch();
@@ -50,8 +51,20 @@ const AccountsPage = () => {
             title: 'Acciones',
             key: 'actions',
             render: (_, record) => (
-                <Space>
-                    <Button onClick={() => handleEdit(record)}>Editar</Button>
+                 <Space>
+                    <Button icon={<EditOutlined />} onClick={() => handleEdit(record)}>
+                        Editar
+                    </Button>
+                    <Popconfirm
+                        title="¿Seguro que querés eliminar esta cuenta?"
+                        okText="Sí"
+                        cancelText="No"
+                        onConfirm={() => handleDelete(record._id)}
+                    >
+                        <Button danger icon={<DeleteOutlined />}>
+                            Eliminar
+                        </Button>
+                    </Popconfirm>
                 </Space>
             )
         }
@@ -63,10 +76,22 @@ const AccountsPage = () => {
         setIsModalVisible(true);
     };
 
-    const handleAddAccount = (account) => {
-        setEditingAccount(account);//Para crear cuenta se pone null 
+    const handleAddAccount = () => {
+        setEditingAccount(null);//Para crear cuenta se pone null 
         setIsModalVisible(true);
     };
+
+    const handleDelete = (id) => {
+        dispatch(deleteAccount(id))
+        .unwrap()
+        .then(() => {
+                message.success('Cuenta eliminada');
+            })
+            .catch((err) => {
+                console.error('Error al eliminar:', err);
+                message.error('Error al eliminar la cuenta');
+            });
+    }
 
     const dataSource = accounts.map(account => ({
         ...account,
@@ -102,7 +127,7 @@ const AccountsPage = () => {
                 }}
                 destroyOnHidden>
 
-                <NewAccountForm onSave={handleSaveAccount} initialValues={editingAccount} />//Pasamos valores si se está editando
+                <NewAccountForm onSave={handleSaveAccount} initialValues={editingAccount} />
             </Modal>
         </div >
     )
