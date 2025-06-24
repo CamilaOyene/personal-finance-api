@@ -1,7 +1,16 @@
 import { Form, Input, Button } from "antd";
+import { useEffect } from 'react';
 
-const NewCategoryForm = ({ onSave }) => {
+const NewCategoryForm = ({ onSave, initialValues }) => {
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        if (initialValues) {
+            form.setFieldsValue(initialValues);
+        } else {
+            form.resetFields();
+        }
+    }, [initialValues, form])
 
     const onFinish = (values) => {
         onSave({ name: values.name });
