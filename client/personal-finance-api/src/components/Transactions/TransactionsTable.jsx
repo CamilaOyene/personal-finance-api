@@ -39,7 +39,7 @@ const TransactionsTable = ({ data, loading, onEdit, onDelete }) => {
         {
             title: 'Acciones',
             key: 'actions',
-            render: (_, record) => {
+            render: (_, record) => (
                 <Space>
                     <Button icon={<EditOutlined />} onClick={() => onEdit(record)}>Editar</Button>
                     <Popconfirm
@@ -53,7 +53,7 @@ const TransactionsTable = ({ data, loading, onEdit, onDelete }) => {
                         </Button>
                     </Popconfirm>
                 </Space>
-            }
+            )
         }
     ];
 

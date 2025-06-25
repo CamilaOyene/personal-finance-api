@@ -61,7 +61,7 @@ const TransactionsPage = () => {
             setIsModalVisible(false);
             setEditingTransaction(null);
         } catch (error) {
-            message.error('Error al guardar la transacción: ', error)
+            message.error(`Error al guardar la transacción: ${error}`)
         }
     }
 
@@ -69,7 +69,7 @@ const TransactionsPage = () => {
     //Filtrado(se hace sobre las transacciones del store)
     const filteredTransactions = transactions.filter((tx) => {
         const matchType = filters.type === 'all' || tx.type === filters.type;
-        const matchCategory = !filters.category || tx.category === filters.category;
+        const matchCategory = !filters.category || tx.category?._id === filters.category;
         const matchDate =
             !filters.dateRange.length ||
             (
@@ -98,7 +98,7 @@ const TransactionsPage = () => {
 
             {/*Modal con formulario */}
             <Modal
-                title='Nueva Transacción'
+                title={editingTransaction ? 'Editar Transacción' : 'Nueva Transacción'}
                 open={isModalVisible}
                 footer={null}
                 onCancel={() => setIsModalVisible(false)}

@@ -3,12 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input, InputNumber, Select, Button, DatePicker } from "antd";
 import { getAllCategories } from '../../features/categories/categoriesSlice';
 import { getAllAccounts } from '../../features/accounts/accountsSlice';
-
+import dayjs from "dayjs";
 
 
 const { Option } = Select;
 
-const NewTransactionForm = ({ onSubmit }) => {
+/**
+ * Formulario reutilizable para agregar o editar una transacción.
+ * Si recibe `initialValues`, carga los datos en el formulario.
+ */
+
+const NewTransactionForm = ({ onSave, initialValues }) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
 
@@ -22,6 +27,16 @@ const NewTransactionForm = ({ onSubmit }) => {
     }, [dispatch, categories.length, accounts.length]);
 
 
+    //Si se está editando transforma los valores iniciales 
+    const transformedInitialValues = initialValues
+        ? {
+            ...initialValues,
+            date: initialValues.date ? dayjs(initialValues.date) : null,
+            category: initialValues.category?._id || initialValues.category,
+            account: initialValues.account?._id || initialValues.account,
+        }
+        : undefined;
+
 
     const handleFinish = (values) => {
         //Convierte la fecha a string si es Moment
@@ -29,12 +44,12 @@ const NewTransactionForm = ({ onSubmit }) => {
             ...values,
             date: values.date.format('YYYY-MM-DD'),
         };
-        onSubmit?.(data);
+        onSave?.(data);
         form.resetFields();
     };
 
     return (
-        <Form form={form} layout='vertical' onFinish={handleFinish}>
+        <Form form={form} layout='vertical' onFinish={handleFinish} initialValues={transformedInitialValues}>
             <Form.Item
                 label='Descripción'
                 name='description'
@@ -80,20 +95,20 @@ const NewTransactionForm = ({ onSubmit }) => {
 
 
             <Form.Item
-            label='Cuenta'
-            name='account'
-            rules={[{required:true, message:'Selecciona una cuenta'}]}
+                label='Cuenta'
+                name='account'
+                rules={[{ required: true, message: 'Selecciona una cuenta' }]}
             >
                 <Select placeholder='Elegí una cuenta'>
-                    {accounts.map((acc)=> (
-                        <Option key={acc._id} value={acc.id}>
+                    {accounts.map((acc) => (
+                        <Option key={acc._id} value={acc._id}>
                             {acc.name}
                         </Option>
                     ))}
                 </Select>
             </Form.Item>
-            
-            
+
+
             <Form.Item
                 label='Fecha'
                 name='date'
@@ -105,7 +120,7 @@ const NewTransactionForm = ({ onSubmit }) => {
 
             <Form.Item>
                 <Button type='primary' htmlType="submit">
-                    Agregar Transacción
+                    {initialValues ? 'Actualizar Transacción' : 'Agregar Transacción'}
                 </Button>
             </Form.Item>
 
