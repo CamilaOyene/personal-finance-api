@@ -101,7 +101,10 @@ const TransactionsPage = () => {
                 title={editingTransaction ? 'Editar Transacción' : 'Nueva Transacción'}
                 open={isModalVisible}
                 footer={null}
-                onCancel={() => setIsModalVisible(false)}
+                onCancel={() => {
+                    setIsModalVisible(false)
+                    setEditingTransaction(null);
+                }}
             >
                 <NewTransactionForm onSave={handleSaveTransaction} initialValues={editingTransaction} />
             </Modal>

@@ -20,6 +20,7 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
     const { categories } = useSelector((state) => state.categories);
     const { accounts } = useSelector((state) => state.accounts);
 
+
     //cargar categorías y cuentas al cargar
     useEffect(() => {
         if (!categories.length) dispatch(getAllCategories());
