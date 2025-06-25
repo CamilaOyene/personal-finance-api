@@ -1,7 +1,7 @@
-import { Table, Tag, Empty } from 'antd';
+import { Table, Tag, Empty, Popconfirm } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const TransactionsTable = ({ data, loading }) => {
-
+const TransactionsTable = ({ data, loading, onEdit, onDelete }) => {
 
     const columns = [
         {
@@ -36,6 +36,25 @@ const TransactionsTable = ({ data, loading }) => {
             key: 'date',
             render: (date) => new Date(date).toLocaleDateString('es-AR')
         },
+        {
+            title: 'Acciones',
+            key: 'actions',
+            render: (_, record) => {
+                <Space>
+                    <Button icon={<EditOutlined />} onClick={() => onEdit(record)}>Editar</Button>
+                    <Popconfirm
+                        title='¿Seguro que querés eliminar esta transacción?'
+                        onText='Sí'
+                        cancelText='No'
+                        onConfirm={() => onDelete(record._id)}
+                    >
+                        <Button danger icon={<DeleteOutlined />}>
+                            Eliminar
+                        </Button>
+                    </Popconfirm>
+                </Space>
+            }
+        }
     ];
 
     const dataSource = data?.map((item) => ({

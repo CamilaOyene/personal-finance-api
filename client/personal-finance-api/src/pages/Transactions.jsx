@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Space, Popconfirm, message } from 'antd';
 import Filters from '../components/Transactions/Filters';
 import TransactionsTable from '../components/Transactions/TransactionsTable';
 import NewTransactionForm from '../components/Transactions/NewTransactionForm';
-import { getAllTransactions, createTransaction } from '../features/transactions/transactionsSlice';
+import { getAllTransactions, createTransaction, updateTransaction, deleteTransaction } from '../features/transactions/transactionsSlice';
 
 const TransactionsPage = () => {
 
     const dispatch = useDispatch();
     //Datos desde el store
-    const { transactions, loading } = useSelector((state) => state.transactions);
+    const { transactions, loading, error } = useSelector((state) => state.transactions);
     //filtros, mantenemos estado local
     const [filters, setFilters] = useState({
         type: 'all',
@@ -19,6 +19,9 @@ const TransactionsPage = () => {
     });
     //Modal para agregar
     const [isModalVisible, setIsModalVisible] = useState(false);
+    //Estado para saber si estamos editando o creando
+    const [editingTransaction, setEditingTransaction] = useState(null);
+
 
 
     //Traer las transacciones al montar
@@ -26,15 +29,43 @@ const TransactionsPage = () => {
         dispatch(getAllTransactions());
     }, [dispatch])
 
-    //Agregar nueva transacción
-    const handleAddTransaction = async (txData) => {
+    //Nueva transacción
+    const handleAddTransaction = () => {
+        setEditingTransaction(null);
+        setIsModalVisible(true);
+    }
+
+    //editar transacción 
+    const handleEdit = (transaction) => {
+        setEditingTransaction(transaction);
+        setIsModalVisible(true);
+    };
+
+    //Eliminar transacción
+    const handleDelete = (id) => {
+        dispatch(deleteTransaction(id))
+            .unwrap()
+            .then(() => message.success('Transacción eliminada'))
+    }
+
+    //crear o actualizar transaccion
+    const handleSaveTransaction = async (txData) => {
         try {
-            await dispatch(createTransaction(txData)).unwrap();
+            if (editingTransaction) {
+                await dispatch(updateTransaction({ ...txData, _id: editingTransaction._id })).unwrap();
+                message.success('Transacción actualizada');
+            } else {
+                await dispatch(createTransaction(txData)).unwrap();
+                message.success('Transacción creada');
+            }
             setIsModalVisible(false);
+            setEditingTransaction(null);
         } catch (error) {
-            console.error('Error al crear transacción', error);
+            message.error('Error al guardar la transacción: ', error)
         }
     }
+
+
     //Filtrado(se hace sobre las transacciones del store)
     const filteredTransactions = transactions.filter((tx) => {
         const matchType = filters.type === 'all' || tx.type === filters.type;
@@ -60,7 +91,7 @@ const TransactionsPage = () => {
 
             {/*Botón para nueva transacción */}
             <div style={{ textAlign: 'right', marginBottom: 16 }}>
-                <Button type='primary' onClick={() => setIsModalVisible(true)}>
+                <Button type='primary' onClick={handleAddTransaction}>
                     + Nueva transacción
                 </Button>
             </div>
@@ -72,10 +103,15 @@ const TransactionsPage = () => {
                 footer={null}
                 onCancel={() => setIsModalVisible(false)}
             >
-                <NewTransactionForm onSave={handleAddTransaction} />
+                <NewTransactionForm onSave={handleSaveTransaction} initialValues={editingTransaction} />
             </Modal>
-            <TransactionsTable data={filteredTransactions} loading={loading} />
 
+            <TransactionsTable
+                data={filteredTransactions}
+                loading={loading}
+                onEdit={handleEdit}
+                onDelete={handleDelete} />
+            {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );
 
