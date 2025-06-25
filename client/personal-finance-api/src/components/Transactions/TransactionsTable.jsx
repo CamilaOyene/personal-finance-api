@@ -1,27 +1,34 @@
 import { Table, Tag, Empty } from 'antd';
 
 const TransactionsTable = ({ data, loading }) => {
+
+
     const columns = [
         {
             title: 'Tipo',
             dataIndex: 'type',
             key: 'type',
             render: (text) => (
-                <Tag color={text === 'ingreso' ? 'green' : 'volcano'}>
-                    {text.toUpperCase()}
+                <Tag color={text === 'income' ? 'green' : 'volcano'}>
+                    {text === 'income' ? 'INGRESO' : 'GASTO'}
                 </Tag>
             ),
         },
         {
             title: 'Categoría',
             dataIndex: 'category',
-            key: 'category',
+            render: (_, record) => record.category?.name || 'Sin categoría'
+        },
+        {
+            title: 'Cuenta',
+            key: 'account',
+            render: (_, record) => record.account?.name || 'Sin cuenta',
         },
         {
             title: 'Monto',
             dataIndex: 'amount',
             key: 'amount',
-            render: (amount) => `${amount.toFixed(2)}`,
+            render: (amount) => `$${amount.toFixed(2)}`,
         },
         {
             title: 'Fecha',
@@ -35,6 +42,9 @@ const TransactionsTable = ({ data, loading }) => {
         ...item,
         key: item._id,
     })) || [];
+
+
+
     return (
         <Table
             columns={columns}

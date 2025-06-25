@@ -1,9 +1,27 @@
+import { useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input, InputNumber, Select, Button, DatePicker } from "antd";
+import { getAllCategories } from '../../features/categories/categoriesSlice';
+import { getAllAccounts } from '../../features/accounts/accountsSlice';
+
+
 
 const { Option } = Select;
 
 const NewTransactionForm = ({ onSubmit }) => {
     const [form] = Form.useForm();
+    const dispatch = useDispatch();
+
+    const { categories } = useSelector((state) => state.categories);
+    const { accounts } = useSelector((state) => state.accounts);
+
+    //cargar categorías y cuentas al cargar
+    useEffect(() => {
+        if (!categories.length) dispatch(getAllCategories());
+        if (!accounts.length) dispatch(getAllAccounts());
+    }, [dispatch, categories.length, accounts.length]);
+
+
 
     const handleFinish = (values) => {
         //Convierte la fecha a string si es Moment
@@ -46,13 +64,44 @@ const NewTransactionForm = ({ onSubmit }) => {
                 </Select>
             </Form.Item>
 
+
             <Form.Item
-            label='Fecha'
-            name='date'
-            rules={[{required: true, message:'Selecciona una fecha'}]}
+                label='Categoría'
+                name='category'
+                rules={[{ required: true, message: 'Selecciona una categoría' }]}
             >
-                <DatePicker style={{width:'100%'}} />
+                <Select placeholder='Elegí una categoría'>
+                    {categories.map((cat) => (
+                        <Select.Option key={cat._id} value={cat._id}>
+                            {cat.name}
+                        </Select.Option>))}
+                </Select>
             </Form.Item>
+
+
+            <Form.Item
+            label='Cuenta'
+            name='account'
+            rules={[{required:true, message:'Selecciona una cuenta'}]}
+            >
+                <Select placeholder='Elegí una cuenta'>
+                    {accounts.map((acc)=> (
+                        <Option key={acc._id} value={acc.id}>
+                            {acc.name}
+                        </Option>
+                    ))}
+                </Select>
+            </Form.Item>
+            
+            
+            <Form.Item
+                label='Fecha'
+                name='date'
+                rules={[{ required: true, message: 'Selecciona una fecha' }]}
+            >
+                <DatePicker style={{ width: '100%' }} />
+            </Form.Item>
+
 
             <Form.Item>
                 <Button type='primary' htmlType="submit">

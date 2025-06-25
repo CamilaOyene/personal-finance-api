@@ -110,7 +110,7 @@ const CategoriesPage = () => {
             </Button>
 
             {error && (
-                <Aler message={error} type='error' showIcon style={{ marginBottom: 16 }} />
+                <Alert message={error} type='error' showIcon style={{ marginBottom: 16 }} />
             )}
 
             <Table
@@ -138,4 +138,4 @@ const CategoriesPage = () => {
 
 };
 
-export default CategoriesPage;
+export default CategoriesPage; 
