@@ -27,17 +27,19 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
         if (!accounts.length) dispatch(getAllAccounts());
     }, [dispatch, categories.length, accounts.length]);
 
-
-    //Si se está editando transforma los valores iniciales 
-    const transformedInitialValues = initialValues
-        ? {
-            ...initialValues,
-            date: initialValues.date ? dayjs(initialValues.date) : null,
-            category: initialValues.category?._id || initialValues.category,
-            account: initialValues.account?._id || initialValues.account,
+    //Cargar los valores initiales al editar
+    useEffect(() => {
+        if (initialValues) {
+            form.setFieldsValue({
+                ...initialValues,
+                date: initialValues.date ? dayjs(initialValues) : null,
+                category: initialValues.category?._id || initialValues.category,
+                account: initialValues.account?._id || initialValues.account,
+            })
+        } else {
+            form.resetFields();
         }
-        : undefined;
-
+    }, [initialValues, form])
 
     const handleFinish = (values) => {
         //Convierte la fecha a string si es Moment
@@ -50,7 +52,7 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
     };
 
     return (
-        <Form form={form} layout='vertical' onFinish={handleFinish} initialValues={transformedInitialValues}>
+        <Form form={form} layout='vertical' onFinish={handleFinish}>
             <Form.Item
                 label='Descripción'
                 name='description'
