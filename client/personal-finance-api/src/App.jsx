@@ -9,7 +9,7 @@ import Transactions from './pages/Transactions';
 import NotFound from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
-
+import TransactionDetailPage from './components/Transactions/TransactionById';
 
 function App() {
   return (
@@ -30,6 +30,7 @@ function App() {
             <Route path='accounts' element={<Accounts />} />
             <Route path='categories' element={<Categories />} />
             <Route path='transactions' element={<Transactions />} />
+            <Route path='transactions/:id' element={<TransactionDetailPage />} />
           </Route>
         </Route>
 
