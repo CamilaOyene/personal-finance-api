@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { getTransactionById, clearSelectedTransaction } from '../../features/transactions/transactionsSlice';
-import { Card, Spin, Alert, Button, Typography, Row, Col } from 'antd';
+import { Card, Spin, Alert, Button, Typography, Row, Col, message, Space } from 'antd';
+import NewTransactionForm from '@/Transactions/NewTransactionForm';
+import { updateTransaction } from '../../features/transactions/transactionsSlice';
+
 
 const { Title, Text } = Typography;
 
@@ -14,6 +17,7 @@ const TransactionDetailPage = () => {
     const dispatch = useDispatch();
     const { selectedTransaction, loading, error } = useSelector((state) => state.transactions);
     const { description, amount, type, category, account, date } = selectedTransaction
+    const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
         dispatch(getTransactionById(id));
@@ -21,6 +25,15 @@ const TransactionDetailPage = () => {
             dispatch(clearSelectedTransaction());
         }
     }, [dispatch, id])
+
+    const handleUpdate = async (data) => {
+        try {
+            await dispatch(updateTransaction({ id, data })).unwrap();
+            message.success('Transacción actualizada correctamente');
+        } catch (err) {
+            message.error(`Error al actualizar: ${err}`);
+        }
+    };
 
     if (loading) return <Spin>Cargando...</Spin>;
     if (error) return <Alert message='Error' description={error} type='info' showIcon />;
@@ -31,7 +44,13 @@ const TransactionDetailPage = () => {
             <Col xs={24} sm={20} md={16} lg={12}>
                 <Card
                     title={<Title level={4}>Detalles de la Transacción</Title>}
-                    extra={<Button type='link'><Link to='/transactions' >Volver</Link></Button>}
+                    extra={
+                        <Space>
+                            <Button type='link'><Link to='/transactions' >Volver</Link></Button>
+                            <Button type='primary' onClick={() => setShowForm(!showForm)} style={{ marginTop: 16 }} />
+                        </Space>
+
+                    }
                 >
                     <Row gutter={[0, 16]}>
 
@@ -64,9 +83,21 @@ const TransactionDetailPage = () => {
                             <Text strong>Fecha:</Text>
                             <Text>{new Date(date).toLocaleDateString()}</Text>
                         </Col>
-             
+
                     </Row>
+
                 </Card>
+                <Button type='primary' onClick={() => setShowForm(!showForm)} style={{ marginTop: 16 }}>
+                    {showForm ? 'Cancelar edición' : 'Editar transacción'}
+                </Button>
+
+                {showForm && (
+                    <Row style={{ marginTop: 24 }}>
+                        <Col span={24}>
+                            <NewTransactionForm initialValues={selectedTransaction} onSave={handleUpdate} />
+                        </Col>
+                    </Row>
+                )}
             </Col>
         </Row>
     )
