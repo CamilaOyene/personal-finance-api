@@ -6,7 +6,7 @@ export const registerUser = createAsyncThunk(
     'auth/register',
     async (userData, thunkAPI) => {
         try {
-            const res = await api.post('/api/auth/register', userData);
+            const res = await api.post('/auth/register', userData);
             return res.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data.error || 'Error al registrar');
@@ -19,7 +19,7 @@ export const loginUser = createAsyncThunk(
     'auth/login',
     async (credentials, thunkAPI) => {
         try {
-            const res = await api.post('/api/auth/login', credentials);
+            const res = await api.post('/auth/login', credentials);
             return res.data
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data.error || 'Error al iniciar sesión')

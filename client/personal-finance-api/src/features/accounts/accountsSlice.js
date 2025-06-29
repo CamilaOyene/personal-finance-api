@@ -9,7 +9,7 @@ export const getAllAccounts = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const res = await api.get('/accounts');
-            return res.data
+            return res.data.accounts
 
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data.error || 'Error al obtener cuentas')
@@ -31,12 +31,12 @@ export const getAccountById = createAsyncThunk(
 );
 
 
-//Actualizar una cuenta 
+//Crear una cuenta 
 export const createAccount = createAsyncThunk(
     'accounts/create',
     async (data, thunkAPI) => {
         try {
-            const res = api.post('/accounts', data);
+            const res = await api.post('/accounts', data);
             return res.data
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data.error || 'Error al crear cuenta')
@@ -100,6 +100,7 @@ const accountsSlice = createSlice({
             .addCase(getAllAccounts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.accounts = action.payload;
+                state.error = null;
             })
 
             .addCase(getAllAccounts.rejected, (state, action) => {
@@ -117,6 +118,8 @@ const accountsSlice = createSlice({
             .addCase(getAccountById.fulfilled, (state, action) => {
                 state.loading = false;
                 state.account = action.payload;
+                state.error = null;
+
             })
 
             .addCase(getAccountById.rejected, (state, action) => {
@@ -134,6 +137,7 @@ const accountsSlice = createSlice({
             .addCase(createAccount.fulfilled, (state, action) => {
                 state.loading = false;
                 state.accounts.push(action.payload);
+                state.error = null;
             })
 
             .addCase(createAccount.rejected, (state, action) => {

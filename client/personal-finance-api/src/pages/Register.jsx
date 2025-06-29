@@ -40,7 +40,7 @@ const Register = () => {
             <Title level={2}>Registrarse</Title>
             <Form layout='vertical' onFinish={onFinish}>
 
-                <Form.Item label='Nombre' name='name' rules={[{ required: true }]}>
+                <Form.Item label='Nombre' name='username' rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
 

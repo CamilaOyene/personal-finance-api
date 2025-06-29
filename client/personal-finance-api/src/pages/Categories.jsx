@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Table, Modal, Space, Popconfirm, message } from "antd";
+import { Button, Table, Modal, Space, Popconfirm, message, Alert } from "antd";
 import { getAllCategories, createCategory, updateCategory, deleteCategory } from '../features/categories/categoriesSlice';
 import NewCategoryForm from '../components/Categories/NewCategoryForm';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -19,7 +19,6 @@ const CategoriesPage = () => {
     useEffect(() => {
         dispatch(getAllCategories());
     }, [dispatch]);
-
 
 
     //Guardar o actualizar categoría

@@ -49,6 +49,11 @@ const AppLayout = () => {
         },
         {
             key: '4',
+            icon: <UserOutlined />,
+            label: <Link to='categories'>Categorías</Link>,
+        },
+        {
+            key: '5',
             icon: <LogoutOutlined />,
             label: <span onClick={handleLogout}>Cerrar sesión</span>
         },

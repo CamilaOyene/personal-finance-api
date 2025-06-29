@@ -93,7 +93,7 @@ const AccountsPage = () => {
             });
     }
 
-    const dataSource = accounts.map(account => ({
+    const dataSource = accounts?.map(account => ({
         ...account,
         key: account._id || account.id,
     }))

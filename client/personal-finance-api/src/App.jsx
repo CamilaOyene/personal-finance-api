@@ -10,6 +10,7 @@ import NotFound from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
 import TransactionDetailPage from './components/Transactions/TransactionById';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (

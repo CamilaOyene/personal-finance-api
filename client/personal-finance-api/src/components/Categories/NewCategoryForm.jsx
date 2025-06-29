@@ -1,5 +1,8 @@
-import { Form, Input, Button } from "antd";
 import { useEffect } from 'react';
+import { Form, Input, Button, Select } from "antd";
+
+const { Option } = Select;
+
 
 const NewCategoryForm = ({ onSave, initialValues }) => {
     const [form] = Form.useForm();
@@ -13,23 +16,40 @@ const NewCategoryForm = ({ onSave, initialValues }) => {
     }, [initialValues, form])
 
     const onFinish = (values) => {
-        onSave({ name: values.name });
+        onSave({ name: values.name, type: values.type });
         form.resetFields();
     };
 
     return (
         <Form form={form} layout='vertical' onFinish={onFinish}>
+
+
             <Form.Item
                 label='Nombre'
                 name='name'
                 rules={[{ required: true, message: 'Ingrese el nombre de la categoría' }]}>
                 <Input />
             </Form.Item>
+
+
+            <Form.Item
+                label='Tipo'
+                name='type'
+                rules={[{ required: true, message: 'Seleccione el tipo de categoría' }]}>
+                <Select placeholder="Seleccioná un tipo">
+                    <Option value="income">Ingreso</Option>
+                    <Option value="expense">Gasto</Option>
+                </Select>
+            </Form.Item>
+
+
             <Form.Item>
                 <Button type="primary" htmlType="submit" block >
                     Guardar
                 </Button>
             </Form.Item>
+
+
         </Form>
     );
 };

@@ -1,4 +1,4 @@
-import { Table, Tag, Empty, Popconfirm, Button } from 'antd';
+import { Table, Tag, Empty, Popconfirm, Button,Space } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,7 +43,7 @@ const TransactionsTable = ({ data, loading, onEdit, onDelete }) => {
             key: 'actions',
             render: (_, record) => (
                 <Space>
-                    <Button icon={<EyeOutlined />} onClick={() => navigate(`/transactions/$record._id`)}>Ver</Button>
+                    <Button icon={<EyeOutlined />} onClick={() => navigate(`/transactions/${record._id}`)}>Ver</Button>
                     <Button icon={<EditOutlined />} onClick={() => onEdit(record)}>Editar</Button>
                     <Popconfirm
                         title='¿Seguro que querés eliminar esta transacción?'

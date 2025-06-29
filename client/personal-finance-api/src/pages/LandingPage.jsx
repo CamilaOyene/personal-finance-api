@@ -1,10 +1,21 @@
 // src/pages/Home.jsx
 import { Typography, Button } from 'antd';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;
 
 const LandingPage = () => {
+    const { isAuthenticated } = useSelector((state) => state.auth)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/dashboard')
+        }
+    }, [navigate, isAuthenticated])
     return (
         <div style={{ maxWidth: 600, margin: '100px auto', textAlign: 'center' }}>
             <Title>Bienvenido a Mis Finanzas 💰</Title>

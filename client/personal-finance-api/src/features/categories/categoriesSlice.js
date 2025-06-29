@@ -1,6 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from '../../utils/api';
 
+
+//Estado inicial
+const initialState = {
+    categories: [],
+    loading: false,
+    error: null,
+};
+
+
 //1. Obtener todas las categorías 
 export const getAllCategories = createAsyncThunk(
     'categories/getAllCategories',
@@ -58,13 +67,6 @@ export const deleteCategory = createAsyncThunk(
 );
 
 
-
-//Estado inicial
-const initialState = {
-    categories: [],
-    loading: false,
-    error: null,
-};
 
 //Slice
 const categoriesSlice = createSlice({
