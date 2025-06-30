@@ -1,4 +1,6 @@
 import Transaction from '../../models/Transaction.js';
+import adjustAccountBalance from '../../helpers/adjustAccountBalance.js';
+
 
 /**
  * Crea una nueva transacción
@@ -11,8 +13,8 @@ import Transaction from '../../models/Transaction.js';
 const createTransaction = async (transactionData, userId) => {
     const { amount, date, description, type, category, account } = transactionData;
 
-    //Validación básica
-    if(!amount || !date || !type || !category || !account){
+    //Se valida que todos los coampos esten presentes
+    if (!amount || !date || !type || !category || !account) {
         throw new Error('Todos los campos obligatorios deben ser completados');
     }
 
@@ -24,11 +26,19 @@ const createTransaction = async (transactionData, userId) => {
         type,
         category,
         account,
-        user:userId
+        user: userId
     })
 
-    //Guardamos en la base de datos 
-    return await newTransaction.save();
+    //Guardamos la transacción en la base de datos
+    const savedTransaction = await newTransaction.save();
+
+
+    //Ajustamos el saldo de la cuenta según el tipo de transacción
+    await adjustAccountBalance(account, amount, type, 'add');
+
+
+    return savedTransaction;
+
 }
 
 

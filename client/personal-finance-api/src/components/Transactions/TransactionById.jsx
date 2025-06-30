@@ -106,7 +106,7 @@ const TransactionDetailPage = () => {
                     open={isModalVisible}
                     onCancel={() => setIsModalVisible(false)}
                     footer={null}
-                    destroyOnClose
+                    destroyOnHidden
                 >
                     <NewTransactionForm initialValues={selectedTransaction} onSave={handleUpdate} />
                 </Modal>

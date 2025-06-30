@@ -1,3 +1,4 @@
+import adjustAccountBalance from "../../helpers/adjustAccountBalance.js";
 import Transaction from "../../models/Transaction.js";
 
 /**
@@ -9,15 +10,28 @@ import Transaction from "../../models/Transaction.js";
  */
 
 const updateTransaction = async (transactionId, userId, updateData) => {
-    const transaction = await Transaction.findOneAndUpdate(
-        { _id: transactionId, user: userId },
-        updateData,
-        { new: true }
-    );
-    if (!transaction) {
-        throw new Error('Transacción no encontrada o no autorizada');
+    //Busco transacción original antes de cambiarla.
+    const oldTransaction = await Transaction.findOne({ _id: transactionId, user: userId });
+
+    if (!oldTransaction) {
+        throw new Error('Transacción no encontrada o no actualizada');
     }
-    return transaction;
+
+    //Revertir efecto en la cuenta original (si era ingreso se resta)
+    await adjustAccountBalance(oldTransaction.account, oldTransaction.amount, oldTransaction.type, 'remove');
+
+    //Acrtualizamos la transacción con los nuevos datos
+    const updatedTransaction = await Transaction.findByIdAndUpdate(
+        transactionId,
+        updateData,
+        { new: true } // Devolver versión actualizada
+    );
+
+    //Sse aplica el nuevo efecto sobre la cuenta 
+    await adjustAccountBalance(updateTransaction.account, updatedTransaction.amount, updatedTransaction.type, 'add');
+
+    return updatedTransaction;
+
 }
 
 

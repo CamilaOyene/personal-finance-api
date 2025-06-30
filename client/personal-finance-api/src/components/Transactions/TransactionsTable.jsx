@@ -1,4 +1,4 @@
-import { Table, Tag, Empty, Popconfirm, Button,Space } from 'antd';
+import { Table, Tag, Empty, Popconfirm, Button, Space } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,7 +30,7 @@ const TransactionsTable = ({ data, loading, onEdit, onDelete }) => {
             title: 'Monto',
             dataIndex: 'amount',
             key: 'amount',
-            render: (amount) => `$${amount.toFixed(2)}`,
+            render: (amount) => `$${(amount ?? 0).toFixed(2)}`,
         },
         {
             title: 'Fecha',

@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, Input, InputNumber, Select, Button, DatePicker } from "antd";
-import { getAllCategories } from '../../features/categories/categoriesSlice';
+import { Form, Input, InputNumber, Select, Button, DatePicker, Modal, message } from "antd";
+import { createCategory, getAllCategories } from '../../features/categories/categoriesSlice';
 import { getAllAccounts } from '../../features/accounts/accountsSlice';
 import dayjs from "dayjs";
-
+import NewCategoryForm from '../../components/Categories/NewCategoryForm';
 
 const { Option } = Select;
 
@@ -19,6 +19,8 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
 
     const { categories } = useSelector((state) => state.categories);
     const { accounts } = useSelector((state) => state.accounts);
+
+    const [categoryModalVisible, setCategoryModalVisible] = useState(false);
 
 
     //cargar categorías y cuentas al cargar
@@ -41,6 +43,7 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
         }
     }, [initialValues, form])
 
+    //Guardar transacción
     const handleFinish = (values) => {
         //Convierte la fecha a string si es Moment
         const data = {
@@ -51,7 +54,20 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
         form.resetFields();
     };
 
-    return (
+    //Guardar nueva categoría desde el modal 
+    const handleSaveNewCategory = async (data) => {
+        try {
+            const newCategory = await dispatch(createCategory(data)).unwrap();
+            await dispatch(getAllCategories());
+            form.setFieldsValue({ category: newCategory._id });
+            setCategoryModalVisible(false)
+            message.success('Categoría creada correctamente');
+        } catch (error) {
+            message.error(`Error al crear categoría: ${error}`)
+        }
+    }
+
+    return (<>
         <Form form={form} layout='vertical' onFinish={handleFinish}>
             <Form.Item
                 label='Descripción'
@@ -88,11 +104,23 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
                 name='category'
                 rules={[{ required: true, message: 'Selecciona una categoría' }]}
             >
-                <Select placeholder='Elegí una categoría'>
+                <Select
+                    placeholder='Elegí una categoría'
+                    popupRender={menu => (
+                        <>
+                            {menu}
+                            <div style={{ display: 'flex', justifyContent: 'center', padding: 8 }}>
+                                <Button type="link" onClick={() => setCategoryModalVisible(true)}>
+                                    + Nueva categoría
+                                </Button>
+                            </div>
+                        </>
+                    )}
+                >
                     {categories.map((cat) => (
-                        <Select.Option key={cat._id} value={cat._id}>
+                        <Option key={cat._id} value={cat._id}>
                             {cat.name}
-                        </Select.Option>))}
+                        </Option>))}
                 </Select>
             </Form.Item>
 
@@ -127,8 +155,17 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
                 </Button>
             </Form.Item>
 
-
         </Form>
+
+        <Modal
+            title='Crear nueva categoría'
+            open={categoryModalVisible}
+            onCancel={() => setCategoryModalVisible(false)}
+            footer={null}
+        >
+            <NewCategoryForm onSave={handleSaveNewCategory} />
+        </Modal>
+    </>
     );
 };
 
