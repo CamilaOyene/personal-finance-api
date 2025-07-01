@@ -25,14 +25,20 @@ const getDashboardData = async (userId) => {
     const balance = totalIncome - totalExpense;
 
     //Traemos las cuentas del usuario con sus saldos
-    const account = await Account.find({ user: userId });
+    const accounts = await Account.find({ user: userId });
+
+    //Ultimas 5 transacciones ordenadas por fecha 
+    const latestTransactions = await Transaction.find({user: userId})
+    .sort({date: -1})
+    .limit(5)
+    .populate('category account');
 
     return {
         totalIncome,
         totalExpense,
         balance,
-        account,
-        transactionsCount: transactions.length
+        accounts,
+        latestTransactions
     };
 
 };
