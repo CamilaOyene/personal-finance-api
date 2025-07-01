@@ -13,7 +13,7 @@ const deleteTransaction = async (transactionId, userId) => {
     if (!transaction) {
         throw new Error('Transacción no encontrada o no autorizada');
     }
-
+ 
     //Revertir su efecto en la cuenta (ej,si era un ingreso se resta)
 
     await adjustAccountBalance(transaction.account, transaction.amount, transaction.type, 'remove');

@@ -28,7 +28,7 @@ const updateTransaction = async (transactionId, userId, updateData) => {
     );
 
     //Sse aplica el nuevo efecto sobre la cuenta 
-    await adjustAccountBalance(updateTransaction.account, updatedTransaction.amount, updatedTransaction.type, 'add');
+    await adjustAccountBalance(updatedTransaction.account, updatedTransaction.amount, updatedTransaction.type, 'add');
 
     return updatedTransaction;
 
