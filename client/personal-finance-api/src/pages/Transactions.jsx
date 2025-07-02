@@ -1,41 +1,58 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Modal, Space, Popconfirm, message } from 'antd';
+import { Button, Modal, message } from 'antd';
 import Filters from '../components/Transactions/Filters';
 import TransactionsTable from '../components/Transactions/TransactionsTable';
 import NewTransactionForm from '../components/Transactions/NewTransactionForm';
 import { getAllTransactions, createTransaction, updateTransaction, deleteTransaction } from '../features/transactions/transactionsSlice';
 
 const TransactionsPage = () => {
-
     const dispatch = useDispatch();
-    //Datos desde el store
-    const { transactions, loading, error } = useSelector((state) => state.transactions);
-    //filtros, mantenemos estado local
+    const { transactions, loading, error, currentPage, total } = useSelector((state) => state.transactions);
+
+    //Estado para filtros 
     const [filters, setFilters] = useState({
         type: 'all',
         category: '',
         dateRange: []
     });
-    //Modal para agregar
+
+    //Estado para paginación
+    const [pagination, setPagination] = useState({ page: 1, limit: 10 });
+
+    //Estado local para el modal
     const [isModalVisible, setIsModalVisible] = useState(false);
-    //Estado para saber si estamos editando o creando
     const [editingTransaction, setEditingTransaction] = useState(null);
 
+    const parseFilters = (filters) => {
+        const parsed = {
+            ...filters,
+            startDate: filters.dateRange?.[0]?.toISOString(),
+            endDate: filters.dateRange?.[1]?.toISOString()
+        };
+        delete parsed.dateRange;
+        return parsed;
+    };
 
 
-    //Traer las transacciones al montar
+    //Traer transacciones cuando cambian filtros o paginación 
     useEffect(() => {
-        dispatch(getAllTransactions());
-    }, [dispatch])
+        const parsedFilters = parseFilters(filters);
+        dispatch(getAllTransactions({
+            filters: parsedFilters,
+            page: pagination.page,
+            limit: pagination.limit
+        }))
+    }, [dispatch, filters, pagination]);
+
 
     //Nueva transacción
     const handleAddTransaction = () => {
         setEditingTransaction(null);
         setIsModalVisible(true);
-    }
+    };
 
-    //editar transacción 
+    //Editar transacción
     const handleEdit = (transaction) => {
         setEditingTransaction(transaction);
         setIsModalVisible(true);
@@ -45,81 +62,109 @@ const TransactionsPage = () => {
     const handleDelete = (id) => {
         dispatch(deleteTransaction(id))
             .unwrap()
-            .then(() => message.success('Transacción eliminada'))
-    }
+            .then(() => {
+                message.success('Transacción eliminada');
+                const parsedFilters = parseFilters(filters);
+                dispatch(getAllTransactions({
+                    filters: parsedFilters,
+                    page: pagination.page,
+                    limit: pagination.limit
+                }));
+            });
+    };
 
-    //crear o actualizar transaccion
-    const handleSaveTransaction = async (txData) => {
+    //Crear o actualizar transacción 
+    const handleSaveTransaction = async (transactionData) => {
         try {
             if (editingTransaction) {
-                await dispatch(updateTransaction({ ...txData, _id: editingTransaction._id })).unwrap();
+                await dispatch(updateTransaction({ id: editingTransaction._id, data: transactionData })).unwrap();
                 message.success('Transacción actualizada');
             } else {
-                await dispatch(createTransaction(txData)).unwrap();
+                await dispatch(createTransaction(transactionData)).unwrap();
                 message.success('Transacción creada');
             }
             setIsModalVisible(false);
             setEditingTransaction(null);
+
+            const parsedFilters = parseFilters(filters);
+            dispatch(getAllTransactions({
+                filters: parsedFilters,
+                page: pagination.page,
+                limit: pagination.limit
+            }));
         } catch (error) {
-            message.error(`Error al guardar la transacción: ${error}`)
+            message.error(`Error al guardar la transacción: ${error}`);
         }
-    }
+    };
 
-
-    //Filtrado(se hace sobre las transacciones del store)
-    const filteredTransactions = transactions.filter((tx) => {
-        const matchType = filters.type === 'all' || tx.type === filters.type;
-        const matchCategory = !filters.category || tx.category?._id === filters.category;
-        const matchDate =
-            !filters.dateRange.length ||
-            (
-                new Date(tx.date) >= filters.dateRange[0]?._d &&
-                new Date(tx.date) <= filters.dateRange[1]?._d
-            );
-        return matchType && matchCategory && matchDate;
-    })
+    //Cuando cambian los filtros volver a la página 1 
+    const handleFiltersChange = (newFilters) => {
+        setFilters(newFilters);
+        setPagination((prev) => ({ ...prev, page: 1 }));
+    };
 
     return (
-
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: 24 }}>
-            <h1 style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
-                Transacciones
-            </h1>
-
-            {/*Filtros */}
-            <Filters filters={filters} setFilters={setFilters} />
-
-            {/*Botón para nueva transacción */}
-            <div style={{ textAlign: 'right', marginBottom: 16 }}>
-                <Button type='primary' onClick={handleAddTransaction}>
-                    + Nueva transacción
-                </Button>
-            </div>
-
-            {/*Modal con formulario */}
-            <Modal
-                title={editingTransaction ? 'Editar Transacción' : 'Nueva Transacción'}
-                open={isModalVisible}
-                footer={null}
-                onCancel={() => {
-                    setIsModalVisible(false)
-                    setEditingTransaction(null);
-                }}
-            >
-                <NewTransactionForm onSave={handleSaveTransaction} initialValues={editingTransaction} />
-            </Modal>
-
-            <TransactionsTable
-                data={filteredTransactions}
-                loading={loading}
-                onEdit={handleEdit}
-                onDelete={handleDelete} />
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-        </div>
-    );
+        <>
+            <Row justify='center'>
+                <Col xs={24} sm={24} md={20} lg={16}>
 
 
-};
+                    <h1 style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
+                        Transacciones
+                    </h1>
 
 
-export default TransactionsPage;
+                    {/* Filtros */}
+                    <Filters filters={filters} setFilters={handleFiltersChange} />
+
+
+
+                    {/**Botón para nueva transacción */}
+                    <div style={{ textAlign: 'right', marginBottom: 16 }}>
+                        <Button type='primary' onClick={handleAddTransaction}>
+                            +Nueva Transacción
+                        </Button>
+                    </div>
+
+
+
+                    {/**Modal con formulario */}
+                    <Modal
+                        title={editingTransaction ? 'Editar transacción' : 'Nueva Transacción'}
+                        open={isModalVisible}
+                        footer={null}
+                        onCancel={() => {
+                            setIsModalVisible(false);
+                            setEditingTransaction(null);
+                        }}
+                    >
+                        <NewTransactionForm onSave={handleSaveTransaction} initialValues={editingTransaction} />
+                    </Modal>
+
+
+                    {/**Tabla */}
+                    <TransactionsTable
+                        data={transactions}
+                        loading={loading}
+                        pagination={{
+                            current: currentPage,
+                            total,
+                            pageSize: pagination.limit,
+                            onChange: (page) => setPagination((prev) => ({ ...prev, page }))
+                        }}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
+
+                    {/**Error */}
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                </Col>
+            </Row>
+        </>
+    )
+
+
+
+}
+
+export default TransactionsPage

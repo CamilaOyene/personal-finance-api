@@ -5,9 +5,15 @@ import api from '../../utils/api';
 //Obtener todas las transacciones
 export const getAllTransactions = createAsyncThunk(
     'transactions/getAll',
-    async (_, thunkAPI) => {
+    async ({ filters = {}, page = 1, limit = 10 }, thunkAPI) => {
         try {
-            const res = await api.get('/transactions')
+            const query = new URLSearchParams({
+                ...filters,
+                page,
+                limit
+            }).toString();
+
+            const res = await api.get(`/transactions?${query}`);
             return res.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response?.data?.error || 'Error al obtener las transacciones');
@@ -78,6 +84,8 @@ const initialState = {
     selectedTransaction: null,
     loading: false,
     error: null,
+    currentPage: 1,
+    totalPages: 1,
 }
 
 
@@ -101,8 +109,11 @@ const transactionsSlice = createSlice({
             })
 
             .addCase(getAllTransactions.fulfilled, (state, action) => {
+                state.transactions = action.payload.transactions;
+                state.total = action.payload.total;
+                state.currentPage = action.payload.currentPage;
+                state.totalPages = action.payload.totalPages;
                 state.loading = false;
-                state.transactions = action.payload;
                 state.error = null;
             })
 
