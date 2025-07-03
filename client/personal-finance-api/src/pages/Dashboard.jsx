@@ -2,6 +2,9 @@ import { Row, Col, Divider, Typography } from "antd";
 import SummaryCards from '../components/dashboard/SummaryCards';
 import TransacionsTable from '../components/dashboard/TransactionsTable';
 import IncomeExpenseChart from '../components/dashboard/IncomeExpenseCharts';
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import getDashboardData from "../features/dashboard/dashboardSlice";
 
 const { Title } = Typography;
 
