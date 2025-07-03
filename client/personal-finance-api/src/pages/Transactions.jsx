@@ -5,11 +5,12 @@ import Filters from '../components/Transactions/Filters';
 import TransactionsTable from '../components/Transactions/TransactionsTable';
 import NewTransactionForm from '../components/Transactions/NewTransactionForm';
 import { getAllTransactions, createTransaction, updateTransaction, deleteTransaction } from '../features/transactions/transactionsSlice';
+import { getAllCategories } from '../features/categories/categoriesSlice';
 
 const TransactionsPage = () => {
     const dispatch = useDispatch();
     const { transactions, loading, error, currentPage, total } = useSelector((state) => state.transactions);
-
+    const { categories } = useSelector((state) => state.categories)
     //Estado para filtros 
     const [filters, setFilters] = useState({
         type: 'all',
@@ -34,7 +35,10 @@ const TransactionsPage = () => {
         return parsed;
     };
 
-
+    //trae las categorías
+    useEffect(() => {
+        dispatch(getAllCategories());
+    }, [dispatch])
     //Traer transacciones cuando cambian filtros o paginación 
     useEffect(() => {
         const parsedFilters = parseFilters(filters);
@@ -104,63 +108,62 @@ const TransactionsPage = () => {
     };
 
     return (
-        <>
-            <Row justify='center'>
-                <Col xs={24} sm={24} md={20} lg={16}>
+
+        <Row justify='center'>
+            <Col xs={24} sm={24} md={20} lg={16}>
 
 
-                    <h1 style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
-                        Transacciones
-                    </h1>
+                <h1 style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
+                    Transacciones
+                </h1>
 
 
-                    {/* Filtros */}
-                    <Filters filters={filters} setFilters={handleFiltersChange} />
-
-
-
-                    {/**Botón para nueva transacción */}
-                    <div style={{ textAlign: 'right', marginBottom: 16 }}>
-                        <Button type='primary' onClick={handleAddTransaction}>
-                            +Nueva Transacción
-                        </Button>
-                    </div>
+                {/* Filtros */}
+                <Filters filters={filters} setFilters={handleFiltersChange} categories={categories} />
 
 
 
-                    {/**Modal con formulario */}
-                    <Modal
-                        title={editingTransaction ? 'Editar transacción' : 'Nueva Transacción'}
-                        open={isModalVisible}
-                        footer={null}
-                        onCancel={() => {
-                            setIsModalVisible(false);
-                            setEditingTransaction(null);
-                        }}
-                    >
-                        <NewTransactionForm onSave={handleSaveTransaction} initialValues={editingTransaction} />
-                    </Modal>
+                {/**Botón para nueva transacción */}
+                <div style={{ textAlign: 'right', marginBottom: 16 }}>
+                    <Button type='primary' onClick={handleAddTransaction}>
+                        +Nueva Transacción
+                    </Button>
+                </div>
 
 
-                    {/**Tabla */}
-                    <TransactionsTable
-                        data={transactions}
-                        loading={loading}
-                        pagination={{
-                            current: currentPage,
-                            total,
-                            pageSize: pagination.limit,
-                            onChange: (page) => setPagination((prev) => ({ ...prev, page }))
-                        }}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                    />
 
-                    {/**Error */}
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                </Col>
-            </Row>
-        </>
+                {/**Modal con formulario */}
+                <Modal
+                    title={editingTransaction ? 'Editar transacción' : 'Nueva Transacción'}
+                    open={isModalVisible}
+                    footer={null}
+                    onCancel={() => {
+                        setIsModalVisible(false);
+                        setEditingTransaction(null);
+                    }}
+                >
+                    <NewTransactionForm onSave={handleSaveTransaction} initialValues={editingTransaction} />
+                </Modal>
+
+
+                {/**Tabla */}
+                <TransactionsTable
+                    data={transactions}
+                    loading={loading}
+                    pagination={{
+                        current: currentPage,
+                        total,
+                        pageSize: pagination.limit,
+                        onChange: (page) => setPagination((prev) => ({ ...prev, page }))
+                    }}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
+
+                {/**Error */}
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+            </Col>
+        </Row>
     )
 
 

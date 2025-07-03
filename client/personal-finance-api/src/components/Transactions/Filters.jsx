@@ -3,7 +3,8 @@ import { Select, DatePicker, Row, Col } from "antd";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const Filters = ({ filters, setFilters = [] }) => {
+const Filters = ({ filters, setFilters = () => { }, categories = [] }) => {
+
     //Actualiza el tipo de transacción
     const handleTypeChange = (value) => {
         setFilters(prev => ({ ...prev, type: value }));
@@ -39,8 +40,8 @@ const Filters = ({ filters, setFilters = [] }) => {
                     onChange={handleTypeChange}
                     style={{ width: '100%' }}>
                     <Option value='all'>Todos</Option>
-                    <Option value='ingreso'>Ingreso</Option>
-                    <Option value='gasto'>Gaston</Option>
+                    <Option value='income'>Ingreso</Option>
+                    <Option value='expence'>Gasto</Option>
                 </Select>
             </Col>
 
@@ -52,9 +53,12 @@ const Filters = ({ filters, setFilters = [] }) => {
                     allowClear
                     placeholder="Seleccionar categoría"
                     style={{ width: '100%' }}
+                    loading={categories.length === 0}
                 >
-                    {['Comida', 'Transporte', 'Sueldo', 'Ocio'].map(cat => (
-                        <Option key={cat} value={cat}>{cat}</Option>
+                    {categories.map(cat => (
+                        <Option key={cat._id} value={cat._id}>
+                            {cat.name}
+                        </Option>
                     ))}
                 </Select>
             </Col>

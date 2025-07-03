@@ -206,7 +206,5 @@ Authorization: Bearer <tu_token>
 ✅ Accounts  
 ✅ Categories  
 ✅ Transactions  
-🕐 Tests → Próximo paso  
-🕐 Documentación interactiva (Swagger) → Futuro
 
 ---
