@@ -1,5 +1,5 @@
-import Transaction from "../../models/Transaction";
-import Account from "../../models/Account";
+import Transaction from "../../models/Transaction.js";
+import Account from "../../models/Account.js";
 
 /**
  * Obtiene los datos estadísticos para el dashboard de un usuario

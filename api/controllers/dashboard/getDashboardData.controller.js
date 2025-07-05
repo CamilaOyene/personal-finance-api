@@ -1,4 +1,4 @@
-import getDashboardData from "../../services/dashboard/getDashboardData.services";
+import getDashboardData from '../../services/dashboard/getDashboardData.services.js'
 
 /**
  * Controlador del dashboard : respnde con datos resumidos del usuario
