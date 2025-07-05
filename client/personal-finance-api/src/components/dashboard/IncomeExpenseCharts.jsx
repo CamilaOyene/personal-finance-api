@@ -1,17 +1,32 @@
 import { Card } from 'antd';
+import { useSelector } from 'react-redux';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import dayjs from 'dayjs';
 
 const IncomeExpenseChart = () => {
+    const { chartTransactions, loading } = useSelector((state) => state.dashboard);
 
-    //Datos de ejemplo para el gráfico
-    const chartData = [
-        { date: '2025-05-01', income: 4000, expense: 1000 },
-        { date: '2025-05-02', income: 3000, expense: 2000 },
-        { date: '2025-05-03', income: 2000, expense: 500 },
-    ];
+    const groupedData = {};
+
+    chartTransactions.forEach((transaction) => {
+        const date = dayjs(transaction.date).format('YYYY-MM-DD');
+        if (!groupedData[date]) {
+            groupedData[date] = { date, income: 0, expense: 0 };
+        }
+
+        if (transaction.type === 'income') {
+            groupedData[date].income += transaction.amount;
+        } else if (transaction.type === 'expense') {
+            groupedData[date].expense += transaction.amount;
+        }
+    });
+
+    const chartData = Object.values(groupedData).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+
 
     return (
-        <Card title='Ingresos vs Gastos'>
+        <Card title='Ingresos vs Gastos' loading={loading}>
             <ResponsiveContainer width='100%' height={300}>
                 <AreaChart data={chartData}>
                     <XAxis dataKey='date' />

@@ -17,8 +17,9 @@ const initialState = {
     totalIncome: 0,
     totalExpense: 0,
     balance: 0,
-    account: [],
+    accounts: [],
     latestTransactions: [],
+    chartTransactions: [],
     loading: false,
     error: null
 }
@@ -41,6 +42,7 @@ const dashboardSlice = createSlice({
                 state.balance = action.payload.balance;
                 state.accounts = action.payload.accounts;
                 state.latestTransactions = action.payload.latestTransactions;
+                state.chartTransactions = action.payload.chartTransactions;
                 state.error = null
             })
             .addCase(getDashboardData.rejected, (state, action) => {

@@ -28,17 +28,21 @@ const getDashboardData = async (userId) => {
     const accounts = await Account.find({ user: userId });
 
     //Ultimas 5 transacciones ordenadas por fecha 
-    const latestTransactions = await Transaction.find({user: userId})
-    .sort({date: -1})
-    .limit(5)
-    .populate('category account');
+    const latestTransactions = await Transaction.find({ user: userId })
+        .sort({ date: -1 })
+        .limit(5)
+        .populate('category account');
+
+
+
 
     return {
         totalIncome,
         totalExpense,
         balance,
         accounts,
-        latestTransactions
+        latestTransactions,
+        chartTransactions: transactions
     };
 
 };
