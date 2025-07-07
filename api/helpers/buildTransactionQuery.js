@@ -6,11 +6,11 @@
  */
 
 const buildTransactionQuery = (filters, userId) => {
-    const { type, category, startDate, endDate } = filters;
+   const { type, category, startDate, endDate } = filters;
 
     const query = { user: userId };
 
-    if (type) {
+    if (type && type !== 'all') {
         query.type = type;
     }
 
@@ -18,10 +18,11 @@ const buildTransactionQuery = (filters, userId) => {
         query.category = category;
     }
 
-    if (startDate || endDate) {
-        query.date = {};
-        if (startDate) query.date.$gte = new Date(startDate);
-        if (endDate) query.date.$lte = new Date(endDate);
+    if (startDate && endDate) {
+        query.date = {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate)
+        };
     }
 
     return query;
