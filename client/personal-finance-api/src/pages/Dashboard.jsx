@@ -1,10 +1,10 @@
 import { Row, Col } from "antd";
 import SummaryCards from '../components/dashboard/SummaryCards';
-import TransacionsTable from '../components/dashboard/TransactionsTable';
+import TransacionsTableDashboard from '../components/dashboard/TransactionsTableDashboard';
 import IncomeExpenseChart from '../components/dashboard/IncomeExpenseCharts';
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import getDashboardData from "../features/dashboard/dashboardSlice";
+import { getDashboardData } from "../features/dashboard/dashboardSlice";
 
 const Dashboard = () => {
     const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const Dashboard = () => {
 
             {/* Tabla ocupa el ancho completo */}
             <Col span={24}>
-                <TransacionsTable />
+                <TransacionsTableDashboard />
             </Col>
         </Row>
     );

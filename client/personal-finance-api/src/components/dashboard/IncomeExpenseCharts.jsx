@@ -4,11 +4,13 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'rec
 import dayjs from 'dayjs';
 
 const IncomeExpenseChart = () => {
-    const { chartTransactions, loading } = useSelector((state) => state.dashboard);
+    const { chartTransactions = [], loading } = useSelector((state) => state.dashboard);
 
     const groupedData = {};
 
     chartTransactions.forEach((transaction) => {
+        if (!transaction || !transaction.date || !transaction.type || typeof transaction.amount !== 'number') return;
+
         const date = dayjs(transaction.date).format('YYYY-MM-DD');
         if (!groupedData[date]) {
             groupedData[date] = { date, income: 0, expense: 0 };

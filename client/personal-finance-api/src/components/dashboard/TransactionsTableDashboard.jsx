@@ -1,4 +1,4 @@
-import { Card, Table } from 'antd';
+import { Card, Table, Button, Empty, Spin } from 'antd';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -30,7 +30,7 @@ const TransacionsTableDashboard = () => {
             dataIndex: 'type',
             key: 'type',
             render: (type) => (
-                <Tag color={type === 'income' ? 'green' : 'red'}>
+                <Tag color={type  === 'income' ? 'green' : 'red'}>
                     {type === 'income' ? 'Ingreso' : 'Gasto'}
                 </Tag>
             ),
@@ -42,6 +42,25 @@ const TransacionsTableDashboard = () => {
             render: (date) => dayjs(date).format('DD/MM/YYYY'),
         },
     ];
+
+
+    // Spinner mientras carga
+    if (loading) {
+        return (
+            <Card title="Últimas transacciones">
+                <Spin />
+            </Card>
+        );
+    }
+
+    // Mensaje si no hay datos
+    if (!latestTransactions || latestTransactions.length === 0) {
+        return (
+            <Card title="Últimas transacciones">
+                <Empty description="No hay transacciones recientes" />
+            </Card>
+        );
+    }
 
     return (
         <Card title='Últimas transacciones' >

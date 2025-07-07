@@ -3,12 +3,13 @@ import api from '../../utils/api';
 
 export const getDashboardData = createAsyncThunk(
     'dashboard/getDashboardData',
-    async (_, { rejectWithValue }) => {
+    async (_,  thunkAPI) => {
         try {
+            console.log('fulfilled dashboardData: ', response.data)
             const response = await api.get('/dashboard');
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || error.message);
+            return  thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -36,14 +37,18 @@ const dashboardSlice = createSlice({
                 state.error = null;
             })
             .addCase(getDashboardData.fulfilled, (state, action) => {
-                state.loading = false;
-                state.totalIncome = action.payload.totalIncome;
-                state.totalExpense = action.payload.totalExpense;
-                state.balance = action.payload.balance;
-                state.accounts = action.payload.accounts;
-                state.latestTransactions = action.payload.latestTransactions;
-                state.chartTransactions = action.payload.chartTransactions;
-                state.error = null
+
+                if (action.payload) {
+                    state.totalIncome = action.payload.totalIncome ;
+                    state.totalExpense = action.payload.totalExpense;
+                    state.balance = action.payload.balance;
+                    state.accounts = action.payload.accounts;
+                    state.latestTransactions = action.payload.latestTransactions;
+                    state.chartTransactions = action.payload.chartTransactions;
+                    state.error = null;
+                } else {
+                    state.error = "No se pudo obtener información del dashboard.";
+                }
             })
             .addCase(getDashboardData.rejected, (state, action) => {
                 state.loading = false;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Modal, message } from 'antd';
+import { Button, Modal, message, Row, Col} from 'antd';
 import Filters from '../components/Transactions/Filters';
 import TransactionsTable from '../components/Transactions/TransactionsTable';
 import NewTransactionForm from '../components/Transactions/NewTransactionForm';

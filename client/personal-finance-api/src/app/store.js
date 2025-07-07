@@ -6,7 +6,7 @@ import categoriesReducer from '../features/categories/categoriesSlice';
 import transactionsReducer from '../features/transactions/transactionsSlice';
 import dashboardReducer from '../features/dashboard/dashboardSlice';
 
-export const store = configureStore({
+const store = configureStore({
     reducer: {
         auth: authReducer,
         accounts: accountsReducer,
@@ -15,3 +15,5 @@ export const store = configureStore({
         dashboard: dashboardReducer
     },
 });
+
+export default store;

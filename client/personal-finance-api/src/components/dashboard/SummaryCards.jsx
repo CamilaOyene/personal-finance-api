@@ -30,7 +30,7 @@ const SummaryCards = () => {
 
             {/*Gastos */}
             <Col xs={24} sm={12} md={8}>
-                <Card title='Gastos'>
+                <Card title='Gastos'  loading={loading}>
                     <Title level={3}>Gastos - ${totalExpense}</Title>
                 </Card>
             </Col>
