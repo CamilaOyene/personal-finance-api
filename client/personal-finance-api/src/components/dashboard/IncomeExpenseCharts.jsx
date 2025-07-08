@@ -9,7 +9,14 @@ const IncomeExpenseChart = () => {
     const groupedData = {};
 
     chartTransactions.forEach((transaction) => {
-        if (!transaction || !transaction.date || !transaction.type || typeof transaction.amount !== 'number') return;
+        if (
+            !transaction ||
+            !transaction.date ||
+            !dayjs(transaction.date).isValid() ||
+            !transaction.type ||
+            typeof transaction.amount !== 'number'
+        )
+            return;
 
         const date = dayjs(transaction.date).format('YYYY-MM-DD');
         if (!groupedData[date]) {

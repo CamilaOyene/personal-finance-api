@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Modal, message, Row, Col} from 'antd';
+import { Button, Modal, message, Row, Col } from 'antd';
 import Filters from '../components/Transactions/Filters';
 import TransactionsTable from '../components/Transactions/TransactionsTable';
 import NewTransactionForm from '../components/Transactions/NewTransactionForm';
@@ -28,10 +28,17 @@ const TransactionsPage = () => {
     const parseFilters = (filters) => {
         const parsed = {
             ...filters,
-            startDate: filters.dateRange?.[0]?.toISOString(),
-            endDate: filters.dateRange?.[1]?.toISOString()
+            startDate: filters.dateRante?.[0]?.isValid?.() ? filters.dateRange[0].toISOString() : undefined,
+            endDate: filters.dateRange?.[1]?.isValid?.() ? filters.dateRange[1].toISOString() : undefined,
         };
         delete parsed.dateRange;
+
+        //eliminar claves vacías o undefined
+        Object.keys(parsed).forEach(key => {
+            if (!parsed[key] || parsed[key] === 'undefined') {
+                delete parsed[key];
+            }
+        })
         return parsed;
     };
 

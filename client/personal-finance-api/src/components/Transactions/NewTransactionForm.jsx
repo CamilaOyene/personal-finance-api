@@ -48,7 +48,7 @@ const NewTransactionForm = ({ onSave, initialValues }) => {
         //Convierte la fecha a string si es Moment
         const data = {
             ...values,
-            date: values.date.format('YYYY-MM-DD'),
+            date:dayjs(values.date).isValid() ? dayjs(values.date).format('YYYY-MM-DD') : null
         };
         onSave?.(data);
         form.resetFields();

@@ -6,23 +6,27 @@
  */
 
 const buildTransactionQuery = (filters, userId) => {
-   const { type, category, startDate, endDate } = filters;
 
     const query = { user: userId };
 
-    if (type && type !== 'all') {
-        query.type = type;
+    if (filters.type && filters.type !== 'all') {
+        query.type = filters.type;
     }
 
-    if (category) {
-        query.category = category;
+    if (filters.category) {
+        query.category = filters.category;
     }
 
-    if (startDate && endDate) {
-        query.date = {
-            $gte: new Date(startDate),
-            $lte: new Date(endDate)
-        };
+    if (filters.startDate || filters.endDate) {
+        query.date = {};
+        
+        if(filters.startDate && !isNaN(new Date(filters.startDate))){
+            query.date.$gte = new Date(filters.startDate);
+        }
+
+        if(filters.endDate && !isNaN(new Date(filters.endDate))){
+            query.date.$lte = new Date(filters.endDate);
+        }
     }
 
     return query;
