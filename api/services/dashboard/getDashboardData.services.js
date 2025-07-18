@@ -22,7 +22,12 @@ const getDashboardData = async (userId) => {
         .filter(t => t.type === 'expense')
         .reduce((sum, t) => sum + t.amount, 0);
 
-    const balance = totalIncome - totalExpense;
+    let balance = totalIncome - totalExpense;
+
+    // Si el balance es negativo, lo dejamos en 0
+    if (balance < 0) {
+        balance = 0;
+    }
 
     //Traemos las cuentas del usuario con sus saldos
     const accounts = await Account.find({ user: userId });
@@ -33,6 +38,8 @@ const getDashboardData = async (userId) => {
         .limit(5)
         .populate('category account');
 
+    console.log("Transactions encontradas:", transactions.length);
+    console.log("Ejemplo de transacción:", transactions[0]);
 
 
 

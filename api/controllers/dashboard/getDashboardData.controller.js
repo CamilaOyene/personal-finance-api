@@ -14,6 +14,7 @@ const getDashboardController = async (req, res) => {
         res.status(200).json(dashboardData);
 
     } catch (error) {
+        console.error("Error en getDashboardController:", error)
         res.status(500).json({
             message: 'Error al obtener datos del dashboard',
             error: error.message
