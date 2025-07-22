@@ -7,18 +7,16 @@ import Debt from '../../models/Debt.js';
  */
 
 const createDebtService = async (userId, debtData) => {
-    const { title, amount, description, dueDate, type, contact } = debtData;
+    const { description, amount, dueDate, contact } = debtData;
 
-    if (!title || !amount || !dueDate || !type) {
+    if (!description || !amount || !dueDate) {
         throw new Error('Faltan campos obligatorios');
     }
     const newDebt = new Debt({
         user: userId,
-        title,
-        amount,
         description,
+        amount,
         dueDate,
-        type,
         contact
     });
 
