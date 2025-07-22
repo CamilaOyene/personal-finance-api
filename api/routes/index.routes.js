@@ -6,13 +6,15 @@ import categoryRouter from './category.routes.js';
 import accountRouter from './account.routes.js';
 import transactionRouter from "./transaction.routes.js";
 import dashboardRouter from "./dashboard.routes.js";
+import debtRouter from "./debt.routes.js";
 
 const router = Router();
 
 router.use('/auth', authRouter);
 router.use('/dashboard', dashboardRouter);
-router.use('/categories', categoryRouter); 
+router.use('/categories', categoryRouter);
 router.use('/accounts', accountRouter);
 router.use('/transactions', transactionRouter);
+router.use('/debts', debtRouter);
 
 export default router;
