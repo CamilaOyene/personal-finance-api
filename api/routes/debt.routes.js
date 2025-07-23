@@ -1,28 +1,28 @@
 import { Router } from 'express';
 import authMiddleware from '../middlewares/verifyToken.authMiddleware.js';
-import createDebt from '../controllers/debts/createDebt.controller.js';
-import getAllDebts from '../controllers/debts/getAllDebts.controller.js';
-import getDebtById from '../controllers/debts/getDebtById.controller.js';
-import updateDebt from '../controllers/debts/updateDebt.controller.js';
-import deleteDebt from '../controllers/debts/deleteDebt.controller.js';
+import createDebtController from '../controllers/debts/createDebt.controller.js';
+import getAllDebtsController from '../controllers/debts/getAllDebts.controller.js';
+import getDebtByIdController from '../controllers/debts/getDebtById.controller.js';
+import updateDebtController from '../controllers/debts/updateDebt.controller.js';
+import deleteDebtController from '../controllers/debts/deleteDebt.controller.js';
 
 const debtRouter = Router();
 
 debtRouter.use(authMiddleware);
 
 //Crear nueva deuda
-debtRouter.post('/', createDebt);
+debtRouter.post('/', createDebtController);
 
 //Obtener todas las deudas del usuario
-debtRouter.get('/', getAllDebts);
+debtRouter.get('/', getAllDebtsController);
 
 //Obtener deuda específica
-debtRouter.get('/:id', getDebtById);
+debtRouter.get('/:id', getDebtByIdController);
 
 // Actualizar deuda por ID
-debtRouter.put('/:id', updateDebt);
+debtRouter.put('/:id', updateDebtController);
 
 //Eliminar deuda por ID 
-debtRouter.delete('/:id', deleteDebt);
+debtRouter.delete('/:id', deleteDebtController);
 
 export default debtRouter;
