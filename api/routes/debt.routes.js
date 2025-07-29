@@ -5,6 +5,7 @@ import getAllDebtsController from '../controllers/debts/getAllDebts.controller.j
 import getDebtByIdController from '../controllers/debts/getDebtById.controller.js';
 import updateDebtController from '../controllers/debts/updateDebt.controller.js';
 import deleteDebtController from '../controllers/debts/deleteDebt.controller.js';
+import markDebtAsPaidController from '../controllers/debts/markDebtAsPaid.controller.js';
 
 const debtRouter = Router();
 
@@ -24,5 +25,8 @@ debtRouter.put('/:id', updateDebtController);
 
 //Eliminar deuda por ID 
 debtRouter.delete('/:id', deleteDebtController);
+
+//Actualizar a pagada
+debtRouter.patch('/:id/pay', markDebtAsPaidController);
 
 export default debtRouter;

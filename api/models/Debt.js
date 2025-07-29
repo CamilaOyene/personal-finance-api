@@ -36,6 +36,11 @@ const debtSchema = new mongoose.Schema({
   paidAt: {
     type: Date,
   },
+  transactionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Transaction',
+    default: null,
+  }
 }, {
   timestamps: true, // crea createdAt y updatedAt automáticamente
 });
