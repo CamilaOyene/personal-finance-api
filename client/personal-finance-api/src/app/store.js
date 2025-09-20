@@ -5,6 +5,7 @@ import accountsReducer from '../features/accounts/accountsSlice';
 import categoriesReducer from '../features/categories/categoriesSlice';
 import transactionsReducer from '../features/transactions/transactionsSlice';
 import dashboardReducer from '../features/dashboard/dashboardSlice';
+import debtsReducer from '../features/debts/debtsSlice';
 
 const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
         accounts: accountsReducer,
         categories: categoriesReducer,
         transactions: transactionsReducer,
-        dashboard: dashboardReducer
+        dashboard: dashboardReducer,
+        debts: debtsReducer,
     },
 });
 
