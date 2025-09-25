@@ -78,7 +78,7 @@ export const markDebtAsPaid = createAsyncThunk(
     'debts/markDebtAsPaid',
     async ({ debtId, accountId }, thunkAPI) => {
         try {
-            const response = await api.put(`/debts/mark-paid`, { debtId, accountId });
+            const response = await api.put(`/debts/:id/pay`, { debtId, accountId });
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);

@@ -8,19 +8,23 @@ import {
     deleteDebt,
     markDebtAsPaid
 } from '../features/debts/debtsSlice.js';
-import DebtsTable from '../components/';
+import DebtsTable from '../components/debts/DebtsTable';
 import DebtForm from '../components/debts/DebtForm';
+import DebtSummary from '../components/debts/DebtSummary'
 
 
 const DebtsPage = () => {
     const dispatch = useDispatch();
     const { debts, loading, error } = useSelector((state) => state.debts);
 
-    const [iseModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingDebt, setEditingDebt] = useState(null);
 
     useEffect(() => {
         dispatch(getAllDebts());
+    }, [dispatch]);
+
+    useEffect(() => {
         if (error) message.error(error);
     }, [error]);
 
@@ -47,7 +51,7 @@ const DebtsPage = () => {
 
     const handleDelete = (debtId) => {
         dispatch(deleteDebt(debtId)).unwrap()
-            .then(() => message.succes('Deuda eliminada'))
+            .then(() => message.success('Deuda eliminada'))
             .catch((err) => message.error(err));
     };
 
@@ -66,7 +70,7 @@ const DebtsPage = () => {
                     <Card
                         title='Lista de deudas'
                         extra={
-                            <Button type='primary' onClick={() => setIsModalOpeen(true)}>
+                            <Button type='primary' onClick={() => setIsModalOpen(true)}>
                                 + Nueva Deuda
                             </Button>
                         }
@@ -81,16 +85,35 @@ const DebtsPage = () => {
                                     setIsModalOpen(true);
                                 }}
                                 onDelete={handleDelete}
-                                onMarkPaid={handleMarikPaid}
+                                onMarkPaid={handleMarkPaid}
                             />
                         )}
                     </Card>
                 </Col>
-            </Row>
+
+
+                {/**Columna lateral */}
+                <Col xs={24} lg={8}>
+                    <DebtSummary debts={debts} />
+                </Col>
+            </Row >
+
+
+            {/** Modal de crear/editar */}
+            <DebtForm
+                visible={isModalOpen}
+                onCancel={() => {
+                    setIsModalOpen(false);
+                    setEditingDebt(null);
+                }}
+                onSubmit={editingDebt ? handleUpdate : handleCreate}
+                initialValues={editingDebt || {}}
+            />
+
         </>
-    )
+    );
 
 
-}
+};
 
 export default DebtsPage;
